@@ -4,17 +4,17 @@ FROM node:22-alpine
 # Set working directory
 WORKDIR /app/chocolate-frontend
 
-# Copy frontend package files and install
+# Copy frontend package files and install (including dev dependencies)
 COPY chocolate-frontend/package*.json ./
-RUN npm install
+RUN npm install --include=dev
 
 # Copy frontend source (node_modules already exists)
 COPY chocolate-frontend/src ./src
 COPY chocolate-frontend/index.html ./
 COPY chocolate-frontend/vite.config.js ./
 
-# Build frontend
-RUN npm run build
+# Build frontend using npx to ensure vite is found
+RUN npx vite build
 
 # Setup backend
 WORKDIR /app/chocolate-backend
