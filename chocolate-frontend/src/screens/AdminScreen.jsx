@@ -238,3 +238,6 @@ export const AdminScreen = () => {
           )}
         </div>
       )}
+    </div>
+  );
+};
