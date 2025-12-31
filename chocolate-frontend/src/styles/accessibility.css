@@ -1,0 +1,314 @@
+/**
+ * Accessibility & Performance CSS
+ * Includes screen reader support, keyboard navigation, and performance optimizations
+ */
+
+/* Skip to main content link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #622a0f;
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  z-index: 100;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid #8d4925;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Visible on focus for keyboard navigation */
+.sr-only-focusable:active,
+.sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Improve focus visibility for keyboard navigation */
+button:focus,
+input:focus,
+textarea:focus,
+select:focus,
+a:focus {
+  outline: 3px solid #622a0f;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  button,
+  input,
+  textarea,
+  select {
+    border-width: 2px;
+  }
+  
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+  }
+  
+  .container {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+  }
+  
+  input,
+  textarea,
+  select {
+    background-color: #333;
+    color: #e0e0e0;
+    border-color: #555;
+  }
+}
+
+/* Large text support */
+@media (prefers-contrast: more) or (min-width: 1920px) {
+  body {
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  
+  h1 {
+    font-size: 32px;
+  }
+  
+  h2 {
+    font-size: 28px;
+  }
+  
+  h3 {
+    font-size: 24px;
+  }
+}
+
+/* Better visibility for links */
+a {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  transition: color 0.2s;
+}
+
+a:visited {
+  color: #8d4925;
+}
+
+a:active,
+a:focus {
+  outline: 3px solid #622a0f;
+  outline-offset: 2px;
+}
+
+/* Ensure buttons are easily clickable (minimum 44x44px) */
+button,
+a[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: min(0.25em, 8px) max(0.25em, 8px);
+}
+
+/* Improve form field usability */
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+input,
+textarea,
+select {
+  min-height: 44px;
+  font-size: 16px; /* Prevents zoom on iOS */
+  padding: 12px;
+  border-radius: 4px;
+}
+
+/* Color not sole means of conveying info */
+.form-error::before {
+  content: '⚠ ';
+  margin-right: 4px;
+}
+
+.success::before {
+  content: '✓ ';
+  margin-right: 4px;
+}
+
+/* Loading indicator accessibility */
+.loading {
+  position: relative;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #622a0f;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading::after {
+    animation: none;
+    opacity: 0.7;
+  }
+}
+
+/* Ensure sufficient color contrast */
+/* Minimum WCAG AA contrast ratio of 4.5:1 for normal text */
+.text-muted {
+  color: #666;
+}
+
+.text-error {
+  color: #e57373;
+}
+
+.text-success {
+  color: #4caf50;
+}
+
+/* Improve table accessibility */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #f5efea;
+}
+
+th {
+  font-weight: 600;
+  text-align: left;
+  padding: 12px;
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Image alt text importance */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+img[alt=""],
+img:not([alt]) {
+  border: 2px solid #e57373;
+  opacity: 0.5;
+}
+
+/* Ensure proper list semantics */
+ul,
+ol {
+  margin-left: 1.5em;
+}
+
+li {
+  margin-bottom: 0.5em;
+}
+
+/* Notification accessibility */
+.notification,
+.alert,
+.toast {
+  position: relative;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 4px;
+  role: 'alert';
+}
+
+.alert-error {
+  background-color: #ffebee;
+  color: #c62828;
+  border-left: 4px solid #c62828;
+}
+
+.alert-success {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border-left: 4px solid #2e7d32;
+}
+
+.alert-info {
+  background-color: #e3f2fd;
+  color: #1565c0;
+  border-left: 4px solid #1565c0;
+}
+
+/* Performance: Use will-change judiciously */
+.animated-element {
+  will-change: transform;
+}
+
+/* Optimize paint performance */
+.scroll-container {
+  contain: layout style paint;
+}
