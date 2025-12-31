@@ -9,16 +9,13 @@ COPY chocolate-frontend/package*.json ./
 ENV NODE_ENV=development
 RUN npm install
 
-# Verify vite is installed
-RUN ls -la node_modules/.bin/vite || echo "Vite not found in .bin"
-
 # Copy frontend source (node_modules already exists)
 COPY chocolate-frontend/src ./src
 COPY chocolate-frontend/index.html ./
 COPY chocolate-frontend/vite.config.js ./
 
-# Build frontend
-RUN NODE_ENV=production npm run build
+# Build frontend using npx to ensure vite is found
+RUN npx vite build
 
 # Setup backend
 WORKDIR /app/chocolate-backend
