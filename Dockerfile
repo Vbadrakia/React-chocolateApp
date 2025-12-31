@@ -15,7 +15,7 @@ COPY chocolate-frontend/index.html ./
 COPY chocolate-frontend/vite.config.js ./
 
 # Build frontend using npx to ensure vite is found
-RUN npx vite build
+RUN npm run build
 
 # Setup backend
 WORKDIR /app/chocolate-backend
