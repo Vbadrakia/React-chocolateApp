@@ -66,20 +66,6 @@ export const ProfileScreen = () => {
     }
   };
 
-  const fetchOrders = async (silent = false) => {
-    try {
-      if (!silent) setIsLoading(true);
-      const response = await orderService.getMyOrders();
-      setOrders(response.data);
-      setLastUpdated(new Date());
-    } catch (err) {
-      if (!silent) setError('Failed to load orders');
-      console.error(err);
-    } finally {
-      if (!silent) setIsLoading(false);
-    }
-  };
-
   const validateProfileField = (name, value) => {
     let error = '';
     switch (name) {
