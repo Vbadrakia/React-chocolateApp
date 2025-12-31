@@ -24,10 +24,13 @@ export const ProductListScreen = () => {
     try {
       setIsLoading(true);
       const response = await productService.getAll();
-      setProducts(response.data);
+      // Handle different response formats
+      const data = response.data?.data || response.data || [];
+      setProducts(Array.isArray(data) ? data : []);
     } catch (err) {
       setError('Failed to load products');
       console.error(err);
+      setProducts([]); // Set empty array on error
     } finally {
       setIsLoading(false);
     }
