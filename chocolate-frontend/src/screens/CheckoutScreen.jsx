@@ -401,5 +401,6 @@ export const CheckoutScreen = () => {
         </div>
       </div>
     </div>
+    </div>
   );
 };
