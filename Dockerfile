@@ -9,8 +9,8 @@ COPY package*.json ./
 COPY chocolate-frontend/package*.json ./chocolate-frontend/
 COPY chocolate-backend/package*.json ./chocolate-backend/
 
-# Install dependencies with no cache
-RUN npm ci --no-cache --omit=dev --workspace=chocolate-frontend && \
+# Install all dependencies (including dev for build)
+RUN npm ci --no-cache --workspace=chocolate-frontend && \
     npm ci --no-cache --workspace=chocolate-backend
 
 # Copy frontend source
