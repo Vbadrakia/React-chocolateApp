@@ -16,6 +16,7 @@ import { OrderConfirmationScreen } from './screens/OrderConfirmationScreen';
 import { ProfileScreen } from './screens/ProfileScreen';
 import { AdminScreen } from './screens/AdminScreen';
 import { AddProductScreen } from './screens/AddProductScreen';
+import { EditProductScreen } from './screens/EditProductScreen';
 
 function App() {
   return (
@@ -82,6 +83,15 @@ function App() {
                 element={
                   <AdminRoute>
                     <AddProductScreen />
+                  </AdminRoute>
+                }
+              />
+
+              <Route
+                path="/admin/edit-product/:id"
+                element={
+                  <AdminRoute>
+                    <EditProductScreen />
                   </AdminRoute>
                 }
               />
