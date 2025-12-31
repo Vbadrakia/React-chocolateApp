@@ -1,0 +1,5 @@
+name = "react-chocolateapp"
+compatibility_date = "2025-12-31"
+
+[site]
+bucket = "./chocolate-frontend/dist"
