@@ -16,6 +16,34 @@ export const ProductListScreen = () => {
 
   const filters = ['All', 'Dark', 'Milk', 'Fruit', 'Nut', 'Bestseller'];
 
+  // Mock products for demo/development
+  const mockProducts = [
+    {
+      id: '1',
+      name: 'Dark Chocolate Bliss',
+      description: 'Rich 72% dark chocolate with notes of espresso and berries',
+      price: 499,
+      category: 'Dark',
+      imageUrl: 'https://images.unsplash.com/photo-1599599810694-e5ffc5e0e8b4?w=400&h=400&fit=crop',
+    },
+    {
+      id: '2',
+      name: 'Milk Chocolate Dream',
+      description: 'Smooth milk chocolate with creamy caramel filling',
+      price: 399,
+      category: 'Milk',
+      imageUrl: 'https://images.unsplash.com/photo-1599599810694-e5ffc5e0e8b4?w=400&h=400&fit=crop',
+    },
+    {
+      id: '3',
+      name: 'Fruit & Nut Medley',
+      description: 'Dark chocolate studded with dried fruits and roasted nuts',
+      price: 599,
+      category: 'Fruit',
+      imageUrl: 'https://images.unsplash.com/photo-1599599810694-e5ffc5e0e8b4?w=400&h=400&fit=crop',
+    },
+  ];
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -23,6 +51,8 @@ export const ProductListScreen = () => {
   const fetchProducts = async () => {
     try {
       setIsLoading(true);
+      setError('');
+      
       const response = await productService.getAll();
       // Handle different response formats
       let data = response.data;
@@ -33,16 +63,19 @@ export const ProductListScreen = () => {
       }
       
       // Ensure data is always an array
-      if (!Array.isArray(data)) {
-        console.warn('API response is not an array:', data);
-        data = [];
+      if (!Array.isArray(data) || data.length === 0) {
+        console.warn('API response is not an array or empty:', data);
+        // Use mock data as fallback
+        setProducts(mockProducts);
+        setError('Backend not connected. Showing demo products.');
+      } else {
+        setProducts(data);
       }
-      
-      setProducts(data);
     } catch (err) {
-      setError('Failed to load products: ' + (err.message || 'Unknown error'));
-      console.error('Full error:', err);
-      setProducts([]); // Set empty array on error
+      console.error('Error fetching products:', err);
+      // On error, show mock products
+      setProducts(mockProducts);
+      setError('Backend connection failed. Showing demo products. Please deploy backend to Railway.');
     } finally {
       setIsLoading(false);
     }
@@ -70,17 +103,6 @@ export const ProductListScreen = () => {
 
   if (isLoading) {
     return <SkeletonGrid count={6} />;
-  }
-
-  if (error) {
-    return (
-      <div className="container">
-        <div className="alert alert-error">{error}</div>
-        <button onClick={fetchProducts} className="btn-primary" style={{ marginTop: '12px' }}>
-          Retry
-        </button>
-      </div>
-    );
   }
 
   return (
@@ -121,6 +143,15 @@ export const ProductListScreen = () => {
             </button>
           ))}
         </div>
+
+        {error && (
+          <div className="alert alert-warning" style={{ marginBottom: '20px' }}>
+            {error}
+            <button onClick={fetchProducts} className="btn-primary" style={{ marginLeft: '10px', marginTop: '8px' }}>
+              Retry
+            </button>
+          </div>
+        )}
 
         <div className="products-grid">
           {filteredProducts.length === 0 ? (
