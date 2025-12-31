@@ -1,27 +1,31 @@
 # Use official Node.js runtime as base image
 FROM node:22-alpine
 
-# Set working directory
+# Build frontend first
 WORKDIR /app/chocolate-frontend
 
-# Copy frontend package files and install with dev dependencies
+# Copy frontend package files and install
 COPY chocolate-frontend/package*.json ./
-ENV NODE_ENV=development
 RUN npm install
 
-# Copy frontend source (node_modules already exists)
+# Copy frontend source and build
 COPY chocolate-frontend/src ./src
 COPY chocolate-frontend/index.html ./
 COPY chocolate-frontend/vite.config.js ./
-
-# Build frontend using npx to ensure vite is found
 RUN npm run build
 
 # Setup backend
 WORKDIR /app/chocolate-backend
+
+# Copy backend package files and install
 COPY chocolate-backend/package*.json ./
 RUN npm install
-COPY chocolate-backend ./
+
+# Copy backend source
+COPY chocolate-backend/*.js ./
+COPY chocolate-backend/config ./config
+COPY chocolate-backend/models ./models
+COPY chocolate-backend/routes ./routes
 
 # Start backend server
 ENV PORT=5000
