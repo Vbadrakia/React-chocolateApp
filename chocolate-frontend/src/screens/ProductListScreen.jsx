@@ -11,6 +11,9 @@ export const ProductListScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [priceRange, setPriceRange] = useState([0, 2000]);
+  const [sortBy, setSortBy] = useState('featured');
   const { addToCart } = useContext(CartContext);
   const { showToast } = useContext(ToastContext);
 
@@ -92,14 +95,45 @@ export const ProductListScreen = () => {
       console.warn('Products is not an array:', products);
       return [];
     }
-    if (selectedFilter === 'All') return products;
-    const term = selectedFilter.toLowerCase();
-    return products.filter((p) =>
-      [p.name, p.description, p.category]
-        .filter(Boolean)
-        .some((field) => field.toLowerCase().includes(term))
-    );
-  }, [products, selectedFilter]);
+
+    let filtered = [...products];
+
+    // Filter by category
+    if (selectedFilter !== 'All') {
+      const term = selectedFilter.toLowerCase();
+      filtered = filtered.filter((p) =>
+        [p.name, p.description, p.category]
+          .filter(Boolean)
+          .some((field) => field.toLowerCase().includes(term))
+      );
+    }
+
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter((p) =>
+        p.name.toLowerCase().includes(query) ||
+        p.description.toLowerCase().includes(query)
+      );
+    }
+
+    // Filter by price range
+    filtered = filtered.filter((p) => {
+      const price = parseFloat(p.price);
+      return price >= priceRange[0] && price <= priceRange[1];
+    });
+
+    // Sort products
+    if (sortBy === 'price-low') {
+      filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+    } else if (sortBy === 'price-high') {
+      filtered.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+    } else if (sortBy === 'name') {
+      filtered.sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    return filtered;
+  }, [products, selectedFilter, searchQuery, priceRange, sortBy]);
 
   if (isLoading) {
     return <SkeletonGrid count={6} />;
@@ -129,6 +163,49 @@ export const ProductListScreen = () => {
             <h2>Explore our chocolates</h2>
           </div>
           <div className="section-note">{filteredProducts.length} items · Small batches, crafted with care.</div>
+        </div>
+
+        {/* Search Bar */}
+        <div className="search-bar-container">
+          <input
+            type="text"
+            className="search-bar"
+            placeholder="Search chocolates..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            aria-label="Search products"
+          />
+        </div>
+
+        {/* Advanced Filters */}
+        <div className="advanced-filters">
+          <div className="filter-group">
+            <label htmlFor="sort-select">Sort by:</label>
+            <select
+              id="sort-select"
+              className="filter-select"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option value="featured">Featured</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="name">Name: A to Z</option>
+            </select>
+          </div>
+
+          <div className="filter-group">
+            <label htmlFor="price-range">Max Price: ₹{priceRange[1]}</label>
+            <input
+              id="price-range"
+              type="range"
+              min="0"
+              max="2000"
+              value={priceRange[1]}
+              onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+              className="price-slider"
+            />
+          </div>
         </div>
 
         <div className="filters">
