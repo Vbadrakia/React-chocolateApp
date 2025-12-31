@@ -5,10 +5,6 @@ import { AuthContext } from '../context/AuthContext';
 import { ToastContext } from '../context/ToastContext';
 import './Admin.css';
 
-/**
- * AdminScreen Component
- * Displays admin dashboard with tabs for orders and products management
- */
 export const AdminScreen = () => {
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
@@ -71,22 +67,15 @@ export const AdminScreen = () => {
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       await orderService.updateStatus(orderId, newStatus);
-      
-      // Optimistic update
       setOrders((prev) =>
         prev.map((o) => ((o._id || o.id) === orderId ? { ...o, status: newStatus } : o))
       );
       setSelectedStatus((prev) => ({ ...prev, [orderId]: newStatus }));
-      
-      // Show success feedback
       showToast(`✓ Order status updated to ${newStatus}`, 'success', 3000);
-      
-      // Refresh to sync with server
       await fetchOrders(true);
     } catch (err) {
       showToast('Failed to update order status: ' + (err.response?.data?.error || err.message), 'error', 4000);
       console.error('Status update error:', err);
-      // Revert on error
       await fetchOrders(true);
     }
   };
@@ -100,7 +89,7 @@ export const AdminScreen = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Admin Dashboard</h1>
         <div style={{ fontSize: '12px', color: '#888' }}>
-          Last updated: {lastUpdated.toLocaleTimeString()} 
+          Last updated: {lastUpdated.toLocaleTimeString()}
           <span style={{ marginLeft: '8px', color: '#28a745' }}>● Live</span>
         </div>
       </div>
@@ -131,7 +120,6 @@ export const AdminScreen = () => {
       {activeTab === 'orders' && (
         <div className="orders-section">
           <h2>All Customer Orders</h2>
-
           {orders.length === 0 ? (
             <p>No orders yet.</p>
           ) : (
@@ -178,9 +166,7 @@ export const AdminScreen = () => {
                         <td>
                           <select
                             value={selectedStatus[orderId] || order.status}
-                            onChange={(e) =>
-                              handleStatusChange(orderId, e.target.value)
-                            }
+                            onChange={(e) => handleStatusChange(orderId, e.target.value)}
                             className="status-select"
                           >
                             <option value="Pending">Pending</option>
@@ -211,7 +197,6 @@ export const AdminScreen = () => {
               + Add New Product
             </button>
           </div>
-
           {products.length === 0 ? (
             <p>No products yet.</p>
           ) : (
