@@ -240,6 +240,5 @@ export const AdminScreen = () => {
         </div>
       )}
     </div>
-    </div>
   );
 };
