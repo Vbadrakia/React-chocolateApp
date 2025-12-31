@@ -25,11 +25,23 @@ export const ProductListScreen = () => {
       setIsLoading(true);
       const response = await productService.getAll();
       // Handle different response formats
-      const data = response.data?.data || response.data || [];
-      setProducts(Array.isArray(data) ? data : []);
+      let data = response.data;
+      
+      // If data is wrapped in another data property, unwrap it
+      if (data && typeof data === 'object' && data.data && Array.isArray(data.data)) {
+        data = data.data;
+      }
+      
+      // Ensure data is always an array
+      if (!Array.isArray(data)) {
+        console.warn('API response is not an array:', data);
+        data = [];
+      }
+      
+      setProducts(data);
     } catch (err) {
-      setError('Failed to load products');
-      console.error(err);
+      setError('Failed to load products: ' + (err.message || 'Unknown error'));
+      console.error('Full error:', err);
       setProducts([]); // Set empty array on error
     } finally {
       setIsLoading(false);
@@ -43,6 +55,10 @@ export const ProductListScreen = () => {
   };
 
   const filteredProducts = useMemo(() => {
+    if (!Array.isArray(products)) {
+      console.warn('Products is not an array:', products);
+      return [];
+    }
     if (selectedFilter === 'All') return products;
     const term = selectedFilter.toLowerCase();
     return products.filter((p) =>
