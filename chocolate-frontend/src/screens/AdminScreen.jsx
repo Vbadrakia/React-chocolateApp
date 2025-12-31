@@ -105,6 +105,12 @@ export const AdminScreen = () => {
 
       <div className="admin-tabs">
         <button
+          className={`tab-button ${activeTab === 'dashboard' ? 'active' : ''}`}
+          onClick={() => navigate('/admin/dashboard')}
+        >
+          Dashboard
+        </button>
+        <button
           className={`tab-button ${activeTab === 'orders' ? 'active' : ''}`}
           onClick={() => setActiveTab('orders')}
         >

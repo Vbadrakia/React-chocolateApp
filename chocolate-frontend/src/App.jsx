@@ -17,6 +17,7 @@ import { ProfileScreen } from './screens/ProfileScreen';
 import { AdminScreen } from './screens/AdminScreen';
 import { AddProductScreen } from './screens/AddProductScreen';
 import { EditProductScreen } from './screens/EditProductScreen';
+import { DashboardScreen } from './screens/DashboardScreen';
 
 function App() {
   return (
@@ -74,6 +75,15 @@ function App() {
                 element={
                   <AdminRoute>
                     <AdminScreen />
+                  </AdminRoute>
+                }
+              />
+
+              <Route
+                path="/admin/dashboard"
+                element={
+                  <AdminRoute>
+                    <DashboardScreen />
                   </AdminRoute>
                 }
               />
