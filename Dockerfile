@@ -4,29 +4,27 @@ FROM node:22-alpine
 # Set working directory
 WORKDIR /app
 
-# Copy package files
+# Copy all package files first
 COPY package*.json ./
 COPY chocolate-frontend/package*.json ./chocolate-frontend/
 COPY chocolate-backend/package*.json ./chocolate-backend/
 
-# Install all dependencies (including dev for build)
-RUN npm ci --no-cache --workspace=chocolate-frontend && \
-    npm ci --no-cache --workspace=chocolate-backend
+# Install root and workspace dependencies
+RUN npm ci --no-cache
 
-# Copy frontend source
+# Copy all source files
 COPY chocolate-frontend/src ./chocolate-frontend/src
 COPY chocolate-frontend/index.html ./chocolate-frontend/
 COPY chocolate-frontend/vite.config.js ./chocolate-frontend/
-
-# Copy backend source
 COPY chocolate-backend ./chocolate-backend
 
 # Build frontend
-WORKDIR /app/chocolate-frontend
-RUN npm run build
+WORKDIR /app
+RUN npm run build --workspace=chocolate-frontend
 
-# Start backend
+# Start backend server
 WORKDIR /app/chocolate-backend
 ENV PORT=5000
 ENV NODE_ENV=production
+EXPOSE 5000
 CMD ["node", "server.js"]
