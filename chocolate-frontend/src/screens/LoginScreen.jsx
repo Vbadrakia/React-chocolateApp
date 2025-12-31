@@ -2,20 +2,79 @@ import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../services/api';
 import { AuthContext } from '../context/AuthContext';
+import { validateEmail, validatePassword } from '../utils/validation';
 import './Auth.css';
 
 export const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [generalError, setGeneralError] = useState('');
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const validateField = (name, value) => {
+    let error = '';
+    if (name === 'email') {
+      const validation = validateEmail(value);
+      error = validation.valid ? '' : validation.message;
+    } else if (name === 'password') {
+      const validation = validatePassword(value);
+      error = validation.valid ? '' : validation.message;
+    }
+    return error;
+  };
+
+  const handleBlur = (e) => {
+    const { name } = e.target;
+    setTouched({ ...touched, [name]: true });
+    const error = validateField(name, name === 'email' ? email : password);
+    if (error) {
+      setErrors({ ...errors, [name]: error });
+    } else {
+      const newErrors = { ...errors };
+      delete newErrors[name];
+      setErrors(newErrors);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'email') setEmail(value);
+    else if (name === 'password') setPassword(value);
+    
+    if (touched[name]) {
+      const error = validateField(name, value);
+      if (error) {
+        setErrors({ ...errors, [name]: error });
+      } else {
+        const newErrors = { ...errors };
+        delete newErrors[name];
+        setErrors(newErrors);
+      }
+    }
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError('');
+    setGeneralError('');
+
+    // Validate all fields
+    const emailError = validateField('email', email);
+    const passwordError = validateField('password', password);
+
+    if (emailError || passwordError) {
+      setErrors({
+        ...(emailError && { email: emailError }),
+        ...(passwordError && { password: passwordError }),
+      });
+      setTouched({ email: true, password: true });
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -23,44 +82,53 @@ export const LoginScreen = () => {
       login(response.data.user, response.data.token);
       navigate('/products');
     } catch (err) {
-      setError(err.response?.data?.error || 'Login failed');
+      setGeneralError(err.response?.data?.error || 'Login failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
+
+  const isFormValid = email && password && !errors.email && !errors.password;
 
   return (
     <div className="auth-container">
       <div className="auth-form animate-fade-up">
         <h1>Login</h1>
         <p className="auth-subtitle">Welcome back! Please sign in to continue.</p>
-        {error && <div className="alert alert-error">{error}</div>}
+        {generalError && <div className="alert alert-error">{generalError}</div>}
 
         <form onSubmit={handleLogin}>
           <div className="form-group">
-            <label>Email</label>
+            <label htmlFor="email">Email</label>
             <input
+              id="email"
               type="email"
+              name="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              onChange={handleChange}
+              onBlur={handleBlur}
               placeholder="you@example.com"
               autoComplete="email"
+              className={errors.email && touched.email ? 'input-error' : ''}
             />
+            {errors.email && touched.email && (
+              <div className="form-error">{errors.email}</div>
+            )}
           </div>
 
           <div className="form-group">
-            <label>Password</label>
+            <label htmlFor="password">Password</label>
             <div className="password-wrapper">
               <input
+                id="password"
                 type={showPassword ? 'text' : 'password'}
+                name="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
+                onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="Enter your password"
                 autoComplete="current-password"
-                className={error ? 'input-error' : ''}
+                className={errors.password && touched.password ? 'input-error' : ''}
               />
               <button
                 type="button"
@@ -71,10 +139,19 @@ export const LoginScreen = () => {
                 {showPassword ? 'Hide' : 'Show'}
               </button>
             </div>
-            <div className="form-helper">Minimum 6 characters.</div>
+            {errors.password && touched.password && (
+              <div className="form-error">{errors.password}</div>
+            )}
+            {!errors.password && !touched.password && (
+              <div className="form-helper">Minimum 6 characters.</div>
+            )}
           </div>
 
-          <button type="submit" className="btn-primary" disabled={isLoading || !email || password.length < 6}>
+          <button 
+            type="submit" 
+            className="btn-primary" 
+            disabled={isLoading || !isFormValid}
+          >
             {isLoading ? 'Logging in...' : 'Login'}
           </button>
         </form>

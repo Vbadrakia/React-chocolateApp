@@ -44,11 +44,13 @@
 }
 
 .form-group input {
-  width: auto;
+  width: 100%;
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 14px;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .form-group input:focus {
@@ -61,6 +63,13 @@
   margin-top: 6px;
   font-size: 12px;
   color: #777;
+}
+
+.form-error {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #e57373;
+  font-weight: 500;
 }
 
 .input-error {
