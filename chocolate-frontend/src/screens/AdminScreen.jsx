@@ -5,7 +5,10 @@ import { AuthContext } from '../context/AuthContext';
 import { ToastContext } from '../context/ToastContext';
 import './Admin.css';
 
-// Admin Dashboard Screen
+/**
+ * AdminScreen Component
+ * Displays admin dashboard with tabs for orders and products management
+ */
 export const AdminScreen = () => {
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
