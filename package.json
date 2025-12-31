@@ -11,7 +11,10 @@
     "dev": "concurrently -n backend,frontend -c blue,magenta \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "npm run dev --prefix chocolate-backend",
     "dev:frontend": "npm run dev --prefix chocolate-frontend",
-    "install:all": "npm install --prefix chocolate-backend && npm install --prefix chocolate-frontend"
+    "install:all": "npm install --prefix chocolate-backend && npm install --prefix chocolate-frontend",
+    "build": "npm install --prefix chocolate-frontend && npm run build --prefix chocolate-frontend",
+    "build:backend": "npm install --prefix chocolate-backend",
+    "build:frontend": "npm install --prefix chocolate-frontend && npm run build --prefix chocolate-frontend"
   },
   "devDependencies": {
     "concurrently": "^9.0.1"
