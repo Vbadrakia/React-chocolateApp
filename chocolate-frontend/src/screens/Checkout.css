@@ -1,0 +1,139 @@
+.checkout-content {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.checkout-form {
+  background: white;
+  border-radius: 8px;
+  padding: 30px;
+}
+
+.checkout-form h2 {
+  color: #622a0f;
+  margin-bottom: 20px;
+}
+
+.checkout-form .form-group {
+  margin-bottom: 20px;
+}
+
+.checkout-form label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 600;
+}
+
+.checkout-form input,
+.checkout-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.checkout-form input:focus,
+.checkout-form textarea:focus {
+  outline: none;
+  border-color: #622a0f;
+  box-shadow: 0 0 5px rgba(98, 42, 15, 0.3);
+}
+
+.checkout-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #622a0f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.checkout-form button:hover {
+  background-color: #8d4925;
+}
+
+.checkout-form button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.checkout-summary {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.checkout-summary h2 {
+  color: #622a0f;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.summary-items {
+  border-bottom: 1px solid #eee;
+  margin-bottom: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.summary-totals {
+  margin-top: 15px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  color: #666;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 0;
+  font-weight: bold;
+  font-size: 18px;
+  color: #622a0f;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 8px;
+}
+
+.empty-state h2 {
+  color: #622a0f;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .checkout-content {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-summary {
+    position: static;
+  }
+}

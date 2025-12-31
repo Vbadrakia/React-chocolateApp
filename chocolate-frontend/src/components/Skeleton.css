@@ -1,0 +1,84 @@
+@keyframes skeleton-pulse {
+  0% {
+    background-color: #e8dfd5;
+  }
+  50% {
+    background-color: #f0e8de;
+  }
+  100% {
+    background-color: #e8dfd5;
+  }
+}
+
+.skeleton-card {
+  background: var(--color-surface);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  animation: fadeUp 500ms ease both;
+}
+
+.skeleton-image {
+  width: 100%;
+  height: 260px;
+  background-color: #e8dfd5;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+}
+
+.skeleton-title {
+  height: 18px;
+  background-color: #e8dfd5;
+  border-radius: 4px;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-price {
+  height: 16px;
+  width: 45%;
+  background-color: #e8dfd5;
+  border-radius: 4px;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-text {
+  height: 14px;
+  background-color: #e8dfd5;
+  border-radius: 4px;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.skeleton-btn {
+  flex: 1;
+  height: 40px;
+  background-color: #e8dfd5;
+  border-radius: 999px;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+@media (max-width: 640px) {
+  .skeleton-image {
+    height: 220px;
+  }
+
+  .skeleton-body {
+    padding: 12px;
+    gap: 10px;
+  }
+}

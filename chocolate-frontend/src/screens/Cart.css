@@ -1,0 +1,142 @@
+.cart-content {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.cart-items {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 1fr 120px 120px 80px;
+  gap: 20px;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.item-info h3 {
+  color: #622a0f;
+  margin-bottom: 8px;
+}
+
+.item-info p {
+  color: #8d4925;
+  font-weight: bold;
+}
+
+.item-quantity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.item-quantity button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.item-quantity button:hover {
+  background-color: #622a0f;
+  color: white;
+}
+
+.item-subtotal {
+  font-weight: bold;
+  color: #622a0f;
+  text-align: right;
+}
+
+.cart-summary {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.cart-summary h2 {
+  color: #622a0f;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  color: #666;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 0;
+  font-weight: bold;
+  font-size: 18px;
+  color: #622a0f;
+  border-top: 2px solid #622a0f;
+  border-bottom: 2px solid #622a0f;
+  margin-bottom: 20px;
+}
+
+.cart-summary button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 12px;
+  font-size: 16px;
+}
+
+.empty-cart {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.empty-cart h2 {
+  color: #622a0f;
+  margin-bottom: 10px;
+}
+
+.empty-cart p {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+  .cart-content {
+    grid-template-columns: 1fr;
+  }
+
+  .cart-item {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .item-info,
+  .item-quantity,
+  .item-subtotal {
+    justify-self: start;
+  }
+
+  .cart-summary {
+    position: static;
+  }
+}

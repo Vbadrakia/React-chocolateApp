@@ -1,0 +1,141 @@
+.product-details {
+  padding: 40px 20px 60px;
+}
+
+.pd-hero {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+  align-items: center;
+}
+
+.pd-info h1 {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  color: var(--color-primary);
+  margin-bottom: 10px;
+}
+
+.pd-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-bottom: 6px;
+}
+
+.pd-subtitle {
+  color: var(--color-muted);
+  margin-bottom: 16px;
+}
+
+.pd-price-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0 16px;
+}
+
+.pd-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.pd-desc {
+  color: var(--color-text);
+  margin-bottom: 18px;
+  line-height: 1.6;
+}
+
+.pd-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.pd-notes h4 {
+  font-family: var(--font-heading);
+  margin-bottom: 8px;
+  color: var(--color-primary);
+}
+
+.pd-notes ul {
+  list-style: disc;
+  padding-left: 18px;
+  color: var(--color-muted);
+}
+
+.pd-image {
+  background: #f7f1e9;
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pd-image img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.pd-image-placeholder {
+  width: 100%;
+  height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-muted);
+  background: #f0e6db;
+  border-radius: 12px;
+}
+
+.ghost-btn {
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  text-decoration: none;
+  background: #faf7f3;
+  transition: all 0.2s ease;
+}
+
+.ghost-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.pill-muted {
+  background: #f4ede5;
+  color: #5a4536;
+}
+
+@media (max-width: 640px) {
+  .product-details {
+    padding: 24px 16px 40px;
+  }
+
+  .pd-image img,
+  .pd-image-placeholder {
+    height: 320px;
+  }
+}

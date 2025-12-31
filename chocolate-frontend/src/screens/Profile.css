@@ -1,0 +1,138 @@
+.no-orders {
+  background: white;
+  border-radius: 8px;
+  padding: 40px 20px;
+  text-align: center;
+  color: #666;
+  margin-top: 30px;
+}
+
+.orders-list {
+  margin-top: 30px;
+  display: grid;
+  gap: 20px;
+}
+
+.order-card {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.order-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.order-header {
+  background-color: #f5efea;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.order-header h3 {
+  color: #622a0f;
+  margin-bottom: 4px;
+  font-size: 18px;
+}
+
+.order-date {
+  color: #999;
+  font-size: 12px;
+}
+
+.order-status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+}
+
+.order-status.pending {
+  background-color: #ff9800;
+}
+
+.order-status.confirmed {
+  background-color: #2196f3;
+}
+
+.order-status.shipped {
+  background-color: #9c27b0;
+}
+
+.order-status.delivered {
+  background-color: #4caf50;
+}
+
+.order-status.cancelled {
+  background-color: #f44336;
+}
+
+.order-body {
+  padding: 20px;
+}
+
+.order-info {
+  margin-bottom: 20px;
+}
+
+.order-info p {
+  margin: 8px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.order-info strong {
+  color: #333;
+  margin-right: 4px;
+}
+
+.order-items {
+  margin-bottom: 20px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+.order-items h4 {
+  color: #622a0f;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.item-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 13px;
+  color: #666;
+}
+
+.order-total {
+  border-top: 1px solid #eee;
+  padding-top: 12px;
+  text-align: right;
+  color: #622a0f;
+  font-size: 16px;
+}
+
+.total-amount {
+  color: #8d4925;
+  margin-left: 10px;
+}
+
+@media (max-width: 768px) {
+  .order-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .order-status {
+    align-self: flex-start;
+  }
+}

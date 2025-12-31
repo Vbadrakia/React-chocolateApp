@@ -1,0 +1,203 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px);
+  background: linear-gradient(135deg, #f5efea 0%, #e8dfd5 100%);
+  padding: 20px;
+}
+
+.auth-form {
+  background: white;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-form h1 {
+  text-align: center;
+  color: var(--color-primary);
+  font-family: var(--font-heading);
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+.auth-subtitle {
+  text-align: center;
+  color: var(--color-muted);
+  margin-top: -18px;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.form-group input {
+  width: auto;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 5px rgba(98, 42, 15, 0.3);
+}
+
+.form-helper {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #777;
+}
+
+.input-error {
+  border-color: #e57373 !important;
+  box-shadow: 0 0 4px rgba(229, 115, 115, 0.35) !important;
+}
+
+.auth-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.auth-form button:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.auth-form button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.auth-link {
+  text-align: center;
+  margin-top: 20px;
+  color: #666;
+}
+
+.auth-link a {
+  color: #622a0f;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-link a:hover {
+  text-decoration: underline;
+}
+
+.demo-info {
+  background-color: #f5efea;
+  padding: 12px;
+  border-radius: 4px;
+  margin-top: 20px;
+  font-size: 12px;
+  color: #555;
+}
+
+.demo-info p {
+  margin: 4px 0;
+}
+
+/* Subtle entrance animation for auth screen elements */
+.auth-form.animate-fade-up h1,
+.auth-form.animate-fade-up .auth-subtitle,
+.auth-form.animate-fade-up .alert,
+.auth-form.animate-fade-up .form-group,
+.auth-form.animate-fade-up button.btn-primary,
+.auth-form.animate-fade-up .auth-link,
+.auth-form.animate-fade-up .demo-info {
+  animation: fadeUp 500ms ease both;
+}
+
+.auth-form.animate-fade-up h1 { animation-delay: 40ms; }
+.auth-form.animate-fade-up .auth-subtitle { animation-delay: 80ms; }
+.auth-form.animate-fade-up .alert { animation-delay: 120ms; }
+.auth-form.animate-fade-up .form-group:nth-child(1) { animation-delay: 120ms; }
+.auth-form.animate-fade-up .form-group:nth-child(2) { animation-delay: 160ms; }
+.auth-form.animate-fade-up .form-group:nth-child(3) { animation-delay: 200ms; }
+.auth-form.animate-fade-up button.btn-primary { animation-delay: 240ms; }
+.auth-form.animate-fade-up .auth-link { animation-delay: 280ms; }
+.auth-form.animate-fade-up .demo-info { animation-delay: 320ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-form.animate-fade-up h1,
+  .auth-form.animate-fade-up .auth-subtitle,
+  .auth-form.animate-fade-up .alert,
+  .auth-form.animate-fade-up .form-group,
+  .auth-form.animate-fade-up button.btn-primary,
+  .auth-form.animate-fade-up .auth-link,
+  .auth-form.animate-fade-up .demo-info {
+    animation: none !important;
+  }
+}
+
+/* Password visibility toggle */
+.password-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.password-wrapper input {
+  flex: 9;
+}
+.password-wrapper .toggle-visibility {
+  flex: 1;
+  margin-left: 10px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toggle-visibility {
+  position : static;
+  background: #f7f2ee;
+  color: #622a0f;
+  border: 1px solid #e2d6cd;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.toggle-visibility:hover {
+  background: #efe6df;
+}
+
+.toggle-visibility:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(98,42,15,0.2);
+}
+
+@media (max-width: 600px) {
+  .auth-form {
+    padding: 20px;
+  }
+
+  .auth-form h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+}
