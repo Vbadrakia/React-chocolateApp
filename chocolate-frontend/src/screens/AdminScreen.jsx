@@ -5,6 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import { ToastContext } from '../context/ToastContext';
 import './Admin.css';
 
+// Admin Dashboard Screen
 export const AdminScreen = () => {
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
