@@ -1,7 +1,7 @@
 {
   "name": "react-chocolate-app",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Root config to run frontend and backend together",
   "workspaces": [
     "chocolate-backend",
