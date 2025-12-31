@@ -3,6 +3,32 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { orderService } from '../services/api';
 import './OrderConfirmation.css';
 
+const getDeliveryEstimate = (deliveryOption = 'standard') => {
+  const today = new Date();
+  let daysToAdd;
+  let label;
+  
+  switch (deliveryOption) {
+    case 'express':
+      daysToAdd = 2;
+      label = '2-3 days';
+      break;
+    case 'overnight':
+      daysToAdd = 1;
+      label = '1 day';
+      break;
+    default:
+      daysToAdd = 5;
+      label = '5-7 days';
+  }
+  
+  const deliveryDate = new Date(today.getTime() + daysToAdd * 24 * 60 * 60 * 1000);
+  return {
+    date: deliveryDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+    label,
+  };
+};
+
 export const OrderConfirmationScreen = () => {
   const { orderId } = useParams();
   const navigate = useNavigate();
@@ -61,8 +87,19 @@ export const OrderConfirmationScreen = () => {
               <span className="value">{order.phone}</span>
             </div>
             <div className="detail-row">
+              <span className="label">Estimated Delivery:</span>
+              <span className="value delivery-date">
+                {getDeliveryEstimate(order.deliveryOption).date}
+                <span className="delivery-label">({getDeliveryEstimate(order.deliveryOption).label})</span>
+              </span>
+            </div>
+            <div className="detail-row">
+              <span className="label">Payment Method:</span>
+              <span className="value payment-method">{(order.paymentMethod || 'card').toUpperCase()}</span>
+            </div>
+            <div className="detail-row">
               <span className="label">Total Amount:</span>
-              <span className="value">₹{parseFloat(order.totalPrice).toFixed(2)}</span>
+              <span className="value total-amount">₹{parseFloat(order.totalPrice).toFixed(2)}</span>
             </div>
             <div className="detail-row">
               <span className="label">Status:</span>

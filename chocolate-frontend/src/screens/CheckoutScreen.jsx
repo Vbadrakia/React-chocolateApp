@@ -22,6 +22,8 @@ export const CheckoutScreen = () => {
     state: '',
     postalCode: '',
     phone: '',
+    paymentMethod: 'card',
+    deliveryOption: 'standard',
   });
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
@@ -157,7 +159,25 @@ export const CheckoutScreen = () => {
   }
 
   const subtotal = getTotalPrice();
-  const shipping = 50;
+  
+  // Calculate shipping based on delivery option
+  const getShippingCost = () => {
+    switch (formData.deliveryOption) {
+      case 'express': return 150;
+      case 'overnight': return 300;
+      default: return 50; // standard
+    }
+  };
+  
+  const getDeliveryDays = () => {
+    switch (formData.deliveryOption) {
+      case 'express': return '2-3 days';
+      case 'overnight': return '1 day';
+      default: return '5-7 days'; // standard
+    }
+  };
+
+  const shipping = getShippingCost();
   const total = subtotal + shipping;
 
   return (
@@ -274,6 +294,58 @@ export const CheckoutScreen = () => {
               )}
             </div>
 
+            <div className="form-divider"></div>
+
+            <h3>Delivery Options</h3>
+            <div className="delivery-options">
+              {[
+                { value: 'standard', label: 'Standard (5-7 days)', cost: 50 },
+                { value: 'express', label: 'Express (2-3 days)', cost: 150 },
+                { value: 'overnight', label: 'Overnight (1 day)', cost: 300 },
+              ].map((option) => (
+                <label key={option.value} className="delivery-option">
+                  <input
+                    type="radio"
+                    name="deliveryOption"
+                    value={option.value}
+                    checked={formData.deliveryOption === option.value}
+                    onChange={handleChange}
+                  />
+                  <span className="option-label">
+                    <strong>{option.label}</strong>
+                    <span className="option-cost">₹{option.cost}</span>
+                  </span>
+                </label>
+              ))}
+            </div>
+
+            <div className="form-divider"></div>
+
+            <h3>Payment Method</h3>
+            <div className="payment-options">
+              {[
+                { value: 'card', label: 'Credit/Debit Card', icon: '💳' },
+                { value: 'upi', label: 'UPI (Google Pay, PhonePe, etc.)', icon: '📱' },
+                { value: 'netbanking', label: 'Net Banking', icon: '🏦' },
+                { value: 'wallet', label: 'Digital Wallet', icon: '👛' },
+                { value: 'cod', label: 'Cash on Delivery', icon: '💵' },
+              ].map((method) => (
+                <label key={method.value} className="payment-option">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value={method.value}
+                    checked={formData.paymentMethod === method.value}
+                    onChange={handleChange}
+                  />
+                  <span className="payment-label">
+                    <span className="payment-icon">{method.icon}</span>
+                    <strong>{method.label}</strong>
+                  </span>
+                </label>
+              ))}
+            </div>
+
             <button 
               type="submit" 
               className="btn-primary btn-lg" 
@@ -312,8 +384,12 @@ export const CheckoutScreen = () => {
                   <span>₹{subtotal.toFixed(2)}</span>
                 </div>
                 <div className="summary-row">
-                  <span>Shipping:</span>
+                  <span>Shipping ({getDeliveryDays()}):</span>
                   <span>₹{shipping}</span>
+                </div>
+                <div className="summary-row">
+                  <span>Payment:</span>
+                  <span className="payment-badge">{formData.paymentMethod.toUpperCase()}</span>
                 </div>
                 <div className="summary-total">
                   <span>Total:</span>

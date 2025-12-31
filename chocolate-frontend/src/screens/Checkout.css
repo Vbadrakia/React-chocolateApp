@@ -24,6 +24,13 @@
   font-size: 20px;
 }
 
+.checkout-form-section h3 {
+  color: #622a0f;
+  margin: 24px 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
 .checkout-form-section .form-group {
   margin-bottom: 20px;
 }
@@ -172,6 +179,119 @@
 .empty-state h2 {
   color: #622a0f;
   margin-bottom: 20px;
+}
+
+.form-divider {
+  height: 1px;
+  background: #e5e5e5;
+  margin: 24px 0;
+}
+
+/* Delivery Options */
+.delivery-options {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.delivery-option {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border: 2px solid #e5e5e5;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.delivery-option input[type="radio"] {
+  width: auto;
+  margin-right: 12px;
+  cursor: pointer;
+}
+
+.delivery-option:hover {
+  border-color: #d0d0d0;
+  background: #fafafa;
+}
+
+.delivery-option input[type="radio"]:checked + .option-label {
+  color: #622a0f;
+}
+
+.delivery-option input[type="radio"]:checked ~ .option-label,
+.delivery-option input[type="radio"]:checked + .option-label {
+  font-weight: 600;
+}
+
+.option-label {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #666;
+  font-size: 14px;
+}
+
+.option-cost {
+  color: #622a0f;
+  font-weight: 600;
+}
+
+/* Payment Options */
+.payment-options {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border: 2px solid #e5e5e5;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.payment-option input[type="radio"] {
+  width: auto;
+  margin-right: 12px;
+  cursor: pointer;
+}
+
+.payment-option:hover {
+  border-color: #d0d0d0;
+  background: #fafafa;
+}
+
+.payment-option input[type="radio"]:checked + .payment-label {
+  color: #622a0f;
+  font-weight: 600;
+}
+
+.payment-label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  color: #666;
+  font-size: 14px;
+  gap: 10px;
+}
+
+.payment-icon {
+  font-size: 18px;
+}
+
+.payment-badge {
+  display: inline-block;
+  background: #f5efea;
+  color: #622a0f;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 @media (max-width: 768px) {
