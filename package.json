@@ -1,12 +1,7 @@
 {
-  "name": "react-chocolate-app",
   "private": true,
   "version": "1.0.1",
   "description": "Root config to run frontend and backend together",
-  "workspaces": [
-    "chocolate-backend",
-    "chocolate-frontend"
-  ],
   "scripts": {
     "dev": "concurrently -n backend,frontend -c blue,magenta \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "npm run dev --prefix chocolate-backend",
