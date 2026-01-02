@@ -17,31 +17,10 @@ const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '')
   .filter(Boolean);
 
 // Middleware
-// CORS: allow specific frontend origin(s) in production; allow all in dev if none provided
+// CORS: allow all origins in production for now (debug)
 const corsOptions = {
-  origin: (origin, callback) => {
-    const whitelist = new Set([
-      ...ALLOWED_ORIGINS,
-      ...(FRONTEND_URL ? [FRONTEND_URL] : []),
-    ]);
-
-    // If no whitelist configured, allow all (useful for local dev)
-    if (whitelist.size === 0) {
-      return callback(null, true);
-    }
-
-    if (!origin) {
-      // Non-browser or same-origin requests
-      return callback(null, true);
-    }
-
-    if (whitelist.has(origin)) {
-      return callback(null, true);
-    }
-
-    return callback(new Error('CORS: Origin not allowed'));
-  },
-  credentials: true,
+  origin: '*',
+  credentials: false,
   optionsSuccessStatus: 200,
 };
 
