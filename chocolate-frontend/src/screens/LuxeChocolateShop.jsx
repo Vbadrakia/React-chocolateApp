@@ -1,102 +1,71 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  ShoppingCart, 
-  Heart, 
-  Star, 
-  ChevronRight,
-  Facebook,
-  Twitter,
-  Instagram,
-  Award,
-  Shield,
-  Truck,
-  Users,
-  Sparkles,
-  Package
-} from 'lucide-react';
+import { ShoppingCart, Heart, Star, ChevronRight, Facebook, Award, Shield, Truck, Users, Sparkles, Package } from 'lucide-react';
 
 const ChocolateShop = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-white">
+    <div style={{ minHeight: '100vh', backgroundColor: '#ffffff' }}>
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-amber-50 via-rose-50 to-purple-50">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-100/40 via-transparent to-transparent"></div>
-        
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="mb-4 sm:mb-6 inline-flex items-center bg-gradient-to-r from-amber-600 to-rose-600 text-white px-4 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm rounded-full shadow-lg">
-              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+      <section style={{ 
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(135deg, #fef3c7 0%, #fce7f3 50%, #f3e8ff 100%)',
+        overflow: 'hidden',
+        position: 'relative',
+        padding: '20px'
+      }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto', textAlign: 'center', zIndex: 10, width: '100%' }}>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', background: 'linear-gradient(90deg, #d97706, #dc2626)', color: 'white', padding: '12px 24px', borderRadius: '9999px', marginBottom: '32px', fontSize: '14px', fontWeight: '600' }}>
+              <Sparkles style={{ width: 20, height: 20, marginRight: 8 }} />
               Premium Artisan Chocolates
             </div>
             
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-amber-900 via-rose-900 to-purple-900 bg-clip-text text-transparent leading-tight px-4">
+            <h1 style={{ fontSize: 'clamp(2.5rem, 8vw, 5rem)', fontWeight: 'bold', marginBottom: '24px', background: 'linear-gradient(135deg, #78350f, #991b1b, #6b21a8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
               Indulge in Luxury
             </h1>
             
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 max-w-3xl mx-auto mb-8 sm:mb-12 px-4">
+            <p style={{ fontSize: 'clamp(1rem, 2vw, 1.5rem)', color: '#374151', maxWidth: '800px', margin: '0 auto 48px', lineHeight: '1.6' }}>
               Handcrafted Belgian chocolates made with the finest ingredients from around the world
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full px-4">
-              <button 
-                onClick={() => navigate('/products')}
-                className="w-full sm:w-auto px-8 py-4 text-base sm:text-lg bg-gradient-to-r from-amber-600 to-rose-600 hover:from-amber-700 hover:to-rose-700 text-white rounded-full shadow-xl transition-all flex items-center justify-center font-semibold"
-              >
-                Shop Collection
-                <ChevronRight className="ml-2 h-5 w-5" />
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center' }}>
+              <button onClick={() => navigate('/products')} style={{ padding: '16px 32px', fontSize: '16px', background: 'linear-gradient(90deg, #d97706, #dc2626)', color: 'white', borderRadius: '9999px', border: 'none', cursor: 'pointer', fontWeight: '600', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', transition: 'transform 0.2s', display: 'flex', alignItems: 'center', gap: '8px', minWidth: '200px', justifyContent: 'center' }} onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'} onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>
+                Shop Collection <ChevronRight style={{ width: 20, height: 20 }} />
               </button>
-              <button 
-                onClick={() => navigate('/login')}
-                className="w-full sm:w-auto px-8 py-4 text-base sm:text-lg border-2 border-amber-900 text-amber-900 rounded-full hover:bg-amber-50 bg-transparent transition-all font-semibold"
-              >
+              <button onClick={() => navigate('/login')} style={{ padding: '16px 32px', fontSize: '16px', border: '2px solid #78350f', color: '#78350f', backgroundColor: 'transparent', borderRadius: '9999px', cursor: 'pointer', fontWeight: '600', transition: 'all 0.2s', minWidth: '200px' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#fef3c7'} onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
                 Sign In
               </button>
             </div>
           </motion.div>
         </div>
-        
-        <div className="absolute bottom-0 left-0 right-0 h-16 sm:h-32 bg-gradient-to-t from-white to-transparent"></div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 sm:py-24 bg-white">
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-900 to-rose-900 bg-clip-text text-transparent">
+      <section style={{ padding: '60px 20px', backgroundColor: '#ffffff' }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+            <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 'bold', marginBottom: '16px', background: 'linear-gradient(90deg, #78350f, #991b1b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
               Trusted Worldwide
             </h2>
-            <p className="text-base sm:text-xl text-gray-600">Excellence in every bite, proven by our achievements</p>
+            <p style={{ fontSize: '18px', color: '#4b5563' }}>Excellence in every bite, proven by our achievements</p>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-            {[
-              { icon: Award, value: '50+', label: 'Awards' },
-              { icon: Users, value: '100K+', label: 'Customers' },
-              { icon: Truck, value: '25+', label: 'Years' },
-              { icon: Shield, value: '100%', label: 'Quality' }
-            ].map((stat, index) => {
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '32px' }}>
+            {[{ icon: Award, value: '50+', label: 'Awards' }, { icon: Users, value: '100K+', label: 'Customers' }, { icon: Truck, value: '25+', label: 'Years' }, { icon: Shield, value: '100%', label: 'Quality' }].map((stat, index) => {
               const Icon = stat.icon;
               return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="text-center"
-                >
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-amber-100 to-rose-100 mb-4">
-                    <Icon className="w-8 h-8 text-amber-900" />
+                <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} style={{ textAlign: 'center' }}>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg, #fef3c7, #fecaca)', marginBottom: '20px' }}>
+                    <Icon style={{ width: 40, height: 40, color: '#78350f' }} />
                   </div>
-                  <div className="text-3xl sm:text-4xl font-bold text-amber-900 mb-2">{stat.value}</div>
-                  <div className="text-sm sm:text-base text-gray-600">{stat.label}</div>
+                  <div style={{ fontSize: '36px', fontWeight: 'bold', color: '#78350f', marginBottom: '8px' }}>{stat.value}</div>
+                  <div style={{ fontSize: '16px', color: '#4b5563' }}>{stat.label}</div>
                 </motion.div>
               );
             })}
@@ -105,54 +74,37 @@ const ChocolateShop = () => {
       </section>
 
       {/* Products Preview */}
-      <section className="py-16 sm:py-24 bg-gradient-to-br from-gray-50 to-amber-50">
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-900 to-rose-900 bg-clip-text text-transparent">
+      <section style={{ padding: '60px 20px', background: 'linear-gradient(135deg, #f3f4f6, #fef3c7)' }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+            <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 'bold', marginBottom: '16px', background: 'linear-gradient(90deg, #78350f, #991b1b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
               Featured Collection
             </h2>
-            <p className="text-base sm:text-xl text-gray-600">Discover our handcrafted masterpieces</p>
+            <p style={{ fontSize: '18px', color: '#4b5563' }}>Discover our handcrafted masterpieces</p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {[
-              { name: 'Dark Chocolate Truffles', price: 24.99, rating: 4.9, image: 'https://images.unsplash.com/photo-1511381939415-e44015466834?w=800' },
-              { name: 'Milk Chocolate Assortment', price: 29.99, rating: 4.8, image: 'https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=800' },
-              { name: 'Luxury Gift Box', price: 49.99, rating: 5.0, image: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=800' }
-            ].map((product, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all overflow-hidden group cursor-pointer"
-                onClick={() => navigate('/products')}
-              >
-                <div className="relative aspect-square overflow-hidden bg-gray-100">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <button className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm shadow-lg flex items-center justify-center hover:bg-white transition-colors">
-                    <Heart className="h-5 w-5 text-gray-700" />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px', marginBottom: '40px' }}>
+            {[{ name: 'Dark Chocolate Truffles', price: 24.99, rating: 4.9, image: 'https://images.unsplash.com/photo-1511381939415-e44015466834?w=500&h=500&fit=crop' }, { name: 'Milk Chocolate Assortment', price: 29.99, rating: 4.8, image: 'https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=500&h=500&fit=crop' }, { name: 'Luxury Gift Box', price: 49.99, rating: 5.0, image: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=500&h=500&fit=crop' }].map((product, index) => (
+              <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} style={{ backgroundColor: 'white', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 25px rgba(0,0,0,0.08)', cursor: 'pointer', transition: 'all 0.3s' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.15)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.08)'} onClick={() => navigate('/products')}>
+                <div style={{ position: 'relative', aspectRatio: '1', overflow: 'hidden', backgroundColor: '#f3f4f6' }}>
+                  <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.3s' }} />
+                  <button style={{ position: 'absolute', top: '16px', right: '16px', width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.9)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                    <Heart style={{ width: 20, height: 20, color: '#4b5563' }} />
                   </button>
                 </div>
-                
-                <div className="p-6">
-                  <h3 className="font-semibold text-lg mb-2 text-gray-900">{product.name}</h3>
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="flex items-center">
-                      <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
-                      <span className="ml-1 text-sm font-medium">{product.rating}</span>
+                <div style={{ padding: '24px' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '12px', color: '#1f2937' }}>{product.name}</h3>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <Star style={{ width: 16, height: 16, fill: '#d97706', color: '#d97706' }} />
+                      <span style={{ marginLeft: '4px', fontSize: '14px', fontWeight: '500' }}>{product.rating}</span>
                     </div>
-                    <span className="text-xs text-gray-500">(200+ reviews)</span>
+                    <span style={{ fontSize: '12px', color: '#6b7280' }}>(200+ reviews)</span>
                   </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-amber-900">${product.price}</span>
-                    <button className="px-4 py-2 bg-gradient-to-r from-amber-600 to-rose-600 hover:from-amber-700 hover:to-rose-700 text-white rounded-lg text-sm font-semibold transition-all flex items-center">
-                      <ShoppingCart className="mr-2 h-4 w-4" />
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: '24px', fontWeight: 'bold', color: '#78350f' }}>${product.price}</span>
+                    <button style={{ padding: '8px 16px', background: 'linear-gradient(90deg, #d97706, #dc2626)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', transition: 'all 0.2s' }} onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'} onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>
+                      <ShoppingCart style={{ width: 16, height: 16 }} />
                       Add
                     </button>
                   </div>
@@ -161,49 +113,35 @@ const ChocolateShop = () => {
             ))}
           </div>
 
-          <div className="text-center mt-12">
-            <button 
-              onClick={() => navigate('/products')}
-              className="px-8 py-4 bg-gradient-to-r from-amber-600 to-rose-600 hover:from-amber-700 hover:to-rose-700 text-white rounded-full text-lg font-semibold shadow-xl transition-all inline-flex items-center"
-            >
+          <div style={{ textAlign: 'center' }}>
+            <button onClick={() => navigate('/products')} style={{ padding: '16px 32px', background: 'linear-gradient(90deg, #d97706, #dc2626)', color: 'white', border: 'none', borderRadius: '9999px', fontSize: '18px', fontWeight: '600', cursor: 'pointer', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', display: 'inline-flex', alignItems: 'center', gap: '8px', transition: 'transform 0.2s' }} onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'} onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>
               View All Products
-              <ChevronRight className="ml-2 h-5 w-5" />
+              <ChevronRight style={{ width: 20, height: 20 }} />
             </button>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-16 sm:py-24 bg-white">
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-900 to-rose-900 bg-clip-text text-transparent">
+      {/* Features */}
+      <section style={{ padding: '60px 20px', backgroundColor: '#ffffff' }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+            <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 'bold', marginBottom: '16px', background: 'linear-gradient(90deg, #78350f, #991b1b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
               Why Choose Us
             </h2>
-            <p className="text-base sm:text-xl text-gray-600">Experience the difference of true craftsmanship</p>
+            <p style={{ fontSize: '18px', color: '#4b5563' }}>Experience the difference of true craftsmanship</p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {[
-              { icon: Shield, title: 'Premium Quality', desc: 'Only the finest Belgian chocolate' },
-              { icon: Truck, title: 'Free Shipping', desc: 'On orders over $50' },
-              { icon: Package, title: 'Fresh Daily', desc: 'Handcrafted every morning' },
-              { icon: Award, title: 'Award Winning', desc: 'Recognized globally' }
-            ].map((feature, index) => {
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '32px' }}>
+            {[{ icon: Shield, title: 'Premium Quality', desc: 'Only the finest Belgian chocolate' }, { icon: Truck, title: 'Free Shipping', desc: 'On orders over $50' }, { icon: Package, title: 'Fresh Daily', desc: 'Handcrafted every morning' }, { icon: Award, title: 'Award Winning', desc: 'Recognized globally' }].map((feature, index) => {
               const Icon = feature.icon;
               return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="bg-gradient-to-br from-amber-50 to-rose-50 p-6 rounded-2xl hover:shadow-lg transition-shadow"
-                >
-                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-white shadow-md mb-4">
-                    <Icon className="w-7 h-7 text-amber-900" />
+                <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} style={{ background: 'linear-gradient(135deg, #fef3c7, #fecaca)', padding: '32px', borderRadius: '16px', transition: 'all 0.3s' }}>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '60px', height: '60px', borderRadius: '50%', backgroundColor: 'white', boxShadow: '0 4px 12px rgba(0,0,0,0.08)', marginBottom: '16px' }}>
+                    <Icon style={{ width: 32, height: 32, color: '#78350f' }} />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2 text-gray-900">{feature.title}</h3>
-                  <p className="text-sm text-gray-600">{feature.desc}</p>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px', color: '#1f2937' }}>{feature.title}</h3>
+                  <p style={{ fontSize: '14px', color: '#4b5563' }}>{feature.desc}</p>
                 </motion.div>
               );
             })}
@@ -211,71 +149,49 @@ const ChocolateShop = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 sm:py-24 bg-gradient-to-br from-amber-900 via-rose-900 to-purple-900">
-        <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-white">
-              Ready to Experience Luxury?
-            </h2>
-            <p className="text-lg sm:text-xl text-amber-100 mb-8">
-              Join thousands of satisfied customers and discover why our chocolates are rated 5 stars
-            </p>
-            <button 
-              onClick={() => navigate('/signup')}
-              className="px-8 py-4 bg-white text-amber-900 rounded-full text-lg font-semibold shadow-xl hover:bg-amber-50 transition-all inline-flex items-center"
-            >
-              Get Started Today
-              <ChevronRight className="ml-2 h-5 w-5" />
+      {/* CTA */}
+      <section style={{ padding: '60px 20px', background: 'linear-gradient(135deg, #78350f, #991b1b, #6b21a8)' }}>
+        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 'bold', marginBottom: '24px', color: 'white' }}>Ready to Experience Luxury?</h2>
+            <p style={{ fontSize: '18px', color: '#fef3c7', marginBottom: '32px', lineHeight: '1.6' }}>Join thousands of satisfied customers and discover why our chocolates are rated 5 stars</p>
+            <button onClick={() => navigate('/signup')} style={{ padding: '16px 32px', backgroundColor: 'white', color: '#78350f', border: 'none', borderRadius: '9999px', fontSize: '16px', fontWeight: '600', cursor: 'pointer', boxShadow: '0 10px 25px rgba(0,0,0,0.2)', display: 'inline-flex', alignItems: 'center', gap: '8px', transition: 'all 0.2s' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#fef3c7'} onMouseLeave={(e) => e.target.style.backgroundColor = 'white'}>
+              Get Started Today <ChevronRight style={{ width: 20, height: 20 }} />
             </button>
           </motion.div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300 py-12">
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+      <footer style={{ backgroundColor: '#111827', color: '#d1d5db', padding: '48px 20px' }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '32px', marginBottom: '32px' }}>
             <div>
-              <h3 className="text-white font-bold text-lg mb-4">Luxe Chocolate</h3>
-              <p className="text-sm">Premium artisan chocolates crafted with passion and expertise.</p>
+              <h3 style={{ color: 'white', fontWeight: 'bold', fontSize: '18px', marginBottom: '16px' }}>Luxe Chocolate</h3>
+              <p style={{ fontSize: '14px' }}>Premium artisan chocolates crafted with passion and expertise.</p>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-4">Shop</h4>
-              <ul className="space-y-2 text-sm">
-                <li><button onClick={() => navigate('/products')} className="hover:text-amber-400 transition-colors">All Products</button></li>
-                <li><button onClick={() => navigate('/products')} className="hover:text-amber-400 transition-colors">New Arrivals</button></li>
-                <li><button onClick={() => navigate('/products')} className="hover:text-amber-400 transition-colors">Best Sellers</button></li>
+              <h4 style={{ color: 'white', fontWeight: '600', marginBottom: '16px' }}>Shop</h4>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '14px' }}>
+                <li><button onClick={() => navigate('/products')} style={{ background: 'none', border: 'none', color: '#d1d5db', cursor: 'pointer', padding: 0, textAlign: 'left' }} onMouseEnter={(e) => e.target.style.color = '#fcd34d'} onMouseLeave={(e) => e.target.style.color = '#d1d5db'}>All Products</button></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-amber-400 transition-colors">Contact Us</a></li>
-                <li><a href="#" className="hover:text-amber-400 transition-colors">Shipping Info</a></li>
-                <li><a href="#" className="hover:text-amber-400 transition-colors">Returns</a></li>
+              <h4 style={{ color: 'white', fontWeight: '600', marginBottom: '16px' }}>Support</h4>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '14px' }}>
+                <li><a href="#" style={{ color: '#d1d5db', textDecoration: 'none' }}>Contact Us</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-4">Connect</h4>
-              <div className="flex gap-4">
-                <button className="w-10 h-10 bg-gray-800 hover:bg-amber-600 rounded-full flex items-center justify-center transition-colors">
-                  <Facebook className="w-5 h-5" />
-                </button>
-                <button className="w-10 h-10 bg-gray-800 hover:bg-amber-600 rounded-full flex items-center justify-center transition-colors">
-                  <Instagram className="w-5 h-5" />
-                </button>
-                <button className="w-10 h-10 bg-gray-800 hover:bg-amber-600 rounded-full flex items-center justify-center transition-colors">
-                  <Twitter className="w-5 h-5" />
+              <h4 style={{ color: 'white', fontWeight: '600', marginBottom: '16px' }}>Connect</h4>
+              <div style={{ display: 'flex', gap: '16px' }}>
+                <button style={{ width: '40px', height: '40px', backgroundColor: '#1f2937', color: '#d1d5db', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#d97706'} onMouseLeave={(e) => e.target.style.backgroundColor = '#1f2937'}>
+                  <Facebook style={{ width: 20, height: 20 }} />
                 </button>
               </div>
             </div>
           </div>
-          <div className="border-t border-gray-800 pt-8 text-center text-sm">
+          <div style={{ borderTop: '1px solid #374151', paddingTop: '32px', textAlign: 'center', fontSize: '14px' }}>
             <p>&copy; 2026 Luxe Chocolate. All rights reserved.</p>
           </div>
         </div>
