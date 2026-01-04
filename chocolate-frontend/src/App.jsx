@@ -18,6 +18,7 @@ import { AdminScreen } from './screens/AdminScreen';
 import { AddProductScreen } from './screens/AddProductScreen';
 import { EditProductScreen } from './screens/EditProductScreen';
 import { DashboardScreen } from './screens/DashboardScreen';
+import { ChocolateShop } from './screens/LuxeChocolateShop';
 
 function App() {
   return (
@@ -25,12 +26,10 @@ function App() {
       <AuthProvider>
         <CartProvider>
           <ToastProvider>
-            <Navbar />
-            <Toast />
             <Routes>
+              <Route path="/" element={<ChocolateShop />} />
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
-
               <Route path="/products" element={<ProductListScreen />} />
               <Route path="/products/:id" element={<ProductDetailsScreen />} />
 
@@ -105,8 +104,6 @@ function App() {
                   </AdminRoute>
                 }
               />
-
-              <Route path="/" element={<Navigate to="/products" />} />
             </Routes>
           </ToastProvider>
         </CartProvider>
