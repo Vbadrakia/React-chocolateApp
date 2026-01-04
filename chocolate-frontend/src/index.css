@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
   margin: 0;
   padding: 0;
@@ -6,38 +10,21 @@
 
 html, body, #root {
   width: 100%;
-  height: 100%;
+  height: auto;
   margin: 0;
   padding: 0;
+  background-color: #ffffff;
 }
 
-:root {
-  /* Color palette */
-  --color-bg: #f5efea;        /* cream background */
-  --color-surface: #ffffff;   /* cards and panels */
-  --color-primary: #5a2d0c;   /* deep chocolate */
-  --color-primary-hover: #8b4b26; /* richer hover */
-  --color-accent: #c7a17a;    /* caramel/gold accent */
-  --color-text: #2e2e2e;      /* body text */
-  --color-muted: #6f6f6f;     /* secondary text */
-  --color-border: #e2d6cd;    /* soft borders */
-
-  /* Typography */
-  --font-heading: 'Playfair Display', serif;
-  --font-body: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-
-  /* Elevation */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: var(--font-body);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: #ffffff;
-  color: var(--color-text);
+  color: #2e2e2e;
   line-height: 1.6;
-  margin: 0;
-  padding: 0;
 }
 
 button {
