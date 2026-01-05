@@ -4,13 +4,13 @@ import { productService } from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { ToastContext } from '../context/ToastContext';
 import { Modal } from '../components/Modal';
+import { Navbar } from '../components/Navbar';
 import {
   validateProductName,
   validatePrice,
   validateImageUrl,
   validateField,
 } from '../utils/validation';
-import './Admin.css';
 
 export const EditProductScreen = () => {
   const { id } = useParams();
@@ -179,38 +179,57 @@ export const EditProductScreen = () => {
   }
 
   return (
-    <div className="container">
-      <div className="edit-product-header">
-        <h1>Edit Product</h1>
-        <button
-          onClick={() => navigate('/admin')}
-          className="btn-link"
-        >
-          ← Back to Admin
-        </button>
-      </div>
-
-      <div className="add-product-form">
-        {generalError && <div className="alert alert-error">{generalError}</div>}
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Product Name *</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              required
-            />
-            {touched.name && errors.name && (
-              <div className="form-error">{errors.name}</div>
-            )}
+    <>
+      <Navbar />
+      <div style={{ paddingTop: '65px', minHeight: '100vh', backgroundColor: '#f5f5f5', padding: '20px' }}>
+        <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+            <h1 style={{ fontSize: '32px', color: '#1d1d1f', fontWeight: '600', margin: '0' }}>Edit Product</h1>
+            <button
+              onClick={() => navigate('/admin')}
+              style={{
+                padding: '8px 16px',
+                backgroundColor: 'transparent',
+                color: '#007aff',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontWeight: '600',
+                fontSize: '14px'
+              }}
+            >
+              ← Back to Admin
+            </button>
           </div>
 
-          <div className="form-group">
-            <label>Description *</label>
+          <form onSubmit={handleSubmit} style={{ backgroundColor: 'white', borderRadius: '12px', padding: '30px' }}>
+            {generalError && <div style={{ backgroundColor: '#fee', color: '#c33', padding: '12px', borderRadius: '8px', marginBottom: '20px' }}>{generalError}</div>}
+
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', color: '#1d1d1f', fontWeight: '500' }}>Product Name *</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                required
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  border: touched.name && errors.name ? '2px solid #c33' : '1px solid #d2d2d7',
+                  borderRadius: '8px',
+                  fontSize: '16px',
+                  boxSizing: 'border-box'
+                }}
+              />
+              {touched.name && errors.name && (
+                <div style={{ color: '#c33', fontSize: '12px', marginTop: '4px' }}>{errors.name}</div>
+              )}
+            </div>
+
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'block', marginBottom: '8px', color: '#1d1d1f', fontWeight: '500' }}>Description *</label>
             <textarea
               name="description"
               value={formData.description}
@@ -218,15 +237,24 @@ export const EditProductScreen = () => {
               onBlur={handleBlur}
               rows="4"
               required
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                border: touched.description && errors.description ? '2px solid #c33' : '1px solid #d2d2d7',
+                borderRadius: '8px',
+                fontSize: '16px',
+                boxSizing: 'border-box',
+                fontFamily: 'inherit'
+              }}
             />
             {touched.description && errors.description && (
-              <div className="form-error">{errors.description}</div>
+              <div style={{ color: '#c33', fontSize: '12px', marginTop: '4px' }}>{errors.description}</div>
             )}
           </div>
 
-          <div className="form-row">
-            <div className="form-group">
-              <label>Price (₹) *</label>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '20px' }}>
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', color: '#1d1d1f', fontWeight: '500' }}>Price (₹) *</label>
               <input
                 type="number"
                 name="price"
@@ -235,29 +263,45 @@ export const EditProductScreen = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 required
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  border: touched.price && errors.price ? '2px solid #c33' : '1px solid #d2d2d7',
+                  borderRadius: '8px',
+                  fontSize: '16px',
+                  boxSizing: 'border-box'
+                }}
               />
               {touched.price && errors.price && (
-                <div className="form-error">{errors.price}</div>
+                <div style={{ color: '#c33', fontSize: '12px', marginTop: '4px' }}>{errors.price}</div>
               )}
             </div>
 
-            <div className="form-group">
-              <label>Image URL</label>
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', color: '#1d1d1f', fontWeight: '500' }}>Image URL</label>
               <input
                 type="url"
                 name="imageUrl"
                 value={formData.imageUrl}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  border: touched.imageUrl && errors.imageUrl ? '2px solid #c33' : '1px solid #d2d2d7',
+                  borderRadius: '8px',
+                  fontSize: '16px',
+                  boxSizing: 'border-box'
+                }}
               />
               {touched.imageUrl && errors.imageUrl && (
-                <div className="form-error">{errors.imageUrl}</div>
+                <div style={{ color: '#c33', fontSize: '12px', marginTop: '4px' }}>{errors.imageUrl}</div>
               )}
             </div>
           </div>
 
-          <div className="form-group">
-            <label>Ingredients</label>
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'block', marginBottom: '8px', color: '#1d1d1f', fontWeight: '500' }}>Ingredients</label>
             <textarea
               name="ingredients"
               value={formData.ingredients}
@@ -265,17 +309,35 @@ export const EditProductScreen = () => {
               onBlur={handleBlur}
               rows="2"
               placeholder="e.g., Chocolate, Sugar, Butter..."
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                border: touched.ingredients && errors.ingredients ? '2px solid #c33' : '1px solid #d2d2d7',
+                borderRadius: '8px',
+                fontSize: '16px',
+                boxSizing: 'border-box',
+                fontFamily: 'inherit'
+              }}
             />
             {touched.ingredients && errors.ingredients && (
-              <div className="form-error">{errors.ingredients}</div>
+              <div style={{ color: '#c33', fontSize: '12px', marginTop: '4px' }}>{errors.ingredients}</div>
             )}
           </div>
 
-          <div className="form-actions">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
             <button
               type="submit"
               disabled={isSaving}
-              className="btn-primary"
+              style={{
+                padding: '12px 24px',
+                backgroundColor: isSaving ? '#d2d2d7' : '#007aff',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '16px',
+                fontWeight: '600',
+                cursor: isSaving ? 'not-allowed' : 'pointer'
+              }}
             >
               {isSaving ? 'Saving...' : 'Save Changes'}
             </button>
@@ -283,42 +345,62 @@ export const EditProductScreen = () => {
               type="button"
               onClick={() => setShowDeleteModal(true)}
               disabled={isSaving || isDeleting}
-              className="btn-danger"
+              style={{
+                padding: '12px 24px',
+                backgroundColor: '#fee2e2',
+                color: '#c33',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '16px',
+                fontWeight: '600',
+                cursor: isSaving || isDeleting ? 'not-allowed' : 'pointer',
+                opacity: isSaving || isDeleting ? 0.5 : 1
+              }}
             >
               Delete Product
             </button>
             <button
               type="button"
               onClick={() => navigate('/admin')}
-              className="btn-secondary"
+              style={{
+                padding: '12px 24px',
+                backgroundColor: '#f5f5f5',
+                color: '#007aff',
+                border: '1px solid #d2d2d7',
+                borderRadius: '8px',
+                fontSize: '16px',
+                fontWeight: '600',
+                cursor: 'pointer'
+              }}
             >
               Cancel
             </button>
           </div>
         </form>
-      </div>
 
-      <Modal
-        isOpen={showDeleteModal}
-        onClose={() => setShowDeleteModal(false)}
-        title="Delete Product"
-        size="small"
-        actions={[
-          {
-            label: 'Cancel',
-            onClick: () => setShowDeleteModal(false),
-            variant: 'secondary',
-          },
-          {
-            label: isDeleting ? 'Deleting...' : 'Delete',
-            onClick: handleDelete,
-            variant: 'danger',
-            disabled: isDeleting,
-          },
-        ]}
-      >
-        <p>Are you sure you want to delete this product? This action cannot be undone.</p>
-      </Modal>
+        <Modal
+          isOpen={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          title="Delete Product"
+          size="small"
+          actions={[
+            {
+              label: 'Cancel',
+              onClick: () => setShowDeleteModal(false),
+              variant: 'secondary',
+            },
+            {
+              label: isDeleting ? 'Deleting...' : 'Delete',
+              onClick: handleDelete,
+              variant: 'danger',
+              disabled: isDeleting,
+            },
+          ]}
+        >
+          <p>Are you sure you want to delete this product? This action cannot be undone.</p>
+        </Modal>
+      </div>
     </div>
+    </>
   );
 };

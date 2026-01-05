@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { productService, orderService } from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { ToastContext } from '../context/ToastContext';
-import './Admin.css';
+import { Navbar } from '../components/Navbar';
 
 export const AdminScreen = () => {
   const [orders, setOrders] = useState([]);
@@ -85,37 +85,67 @@ export const AdminScreen = () => {
   }
 
   return (
-    <div className="container">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Admin Dashboard</h1>
-        <div style={{ fontSize: '12px', color: '#888' }}>
-          Last updated: {lastUpdated.toLocaleTimeString()}
-          <span style={{ marginLeft: '8px', color: '#28a745' }}>● Live</span>
-        </div>
-      </div>
+    <>
+      <Navbar />
+      <div style={{ paddingTop: '65px', minHeight: '100vh', backgroundColor: '#f5f5f5', padding: '20px' }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+            <h1 style={{ fontSize: '32px', color: '#1d1d1f', fontWeight: '600' }}>Admin Dashboard</h1>
+            <div style={{ fontSize: '12px', color: '#888' }}>
+              Last updated: {lastUpdated.toLocaleTimeString()}
+              <span style={{ marginLeft: '8px', color: '#28a745' }}>● Live</span>
+            </div>
+          </div>
 
-      {error && <div className="alert alert-error">{error}</div>}
+          {error && <div style={{ backgroundColor: '#fee', color: '#c33', padding: '12px', borderRadius: '8px', marginBottom: '20px' }}>{error}</div>}
 
-      <div className="admin-tabs">
-        <button
-          className={`tab-button ${activeTab === 'dashboard' ? 'active' : ''}`}
-          onClick={() => navigate('/admin/dashboard')}
-        >
-          Dashboard
-        </button>
-        <button
-          className={`tab-button ${activeTab === 'orders' ? 'active' : ''}`}
-          onClick={() => setActiveTab('orders')}
-        >
-          Orders
-        </button>
-        <button
-          className={`tab-button ${activeTab === 'products' ? 'active' : ''}`}
-          onClick={() => setActiveTab('products')}
-        >
-          Products
-        </button>
-      </div>
+          <div style={{ display: 'flex', gap: '10px', marginBottom: '30px', borderBottom: '1px solid #e5e5ea' }}>
+            <button
+              style={{
+                padding: '12px 20px',
+                backgroundColor: activeTab === 'dashboard' ? '#007aff' : 'transparent',
+                color: activeTab === 'dashboard' ? 'white' : '#1d1d1f',
+                border: 'none',
+                borderRadius: '8px 8px 0 0',
+                cursor: 'pointer',
+                fontWeight: '600',
+                transition: 'background-color 0.3s'
+              }}
+              onClick={() => navigate('/admin/dashboard')}
+            >
+              Dashboard
+            </button>
+            <button
+              style={{
+                padding: '12px 20px',
+                backgroundColor: activeTab === 'orders' ? '#007aff' : 'transparent',
+                color: activeTab === 'orders' ? 'white' : '#1d1d1f',
+                border: 'none',
+                borderRadius: '8px 8px 0 0',
+                cursor: 'pointer',
+                fontWeight: '600',
+                transition: 'background-color 0.3s'
+              }}
+              onClick={() => setActiveTab('orders')}
+            >
+              Orders
+            </button>
+            <button
+              style={{
+                padding: '12px 20px',
+                backgroundColor: activeTab === 'products' ? '#007aff' : 'transparent',
+                color: activeTab === 'products' ? 'white' : '#1d1d1f',
+                border: 'none',
+                borderRadius: '8px 8px 0 0',
+                cursor: 'pointer',
+                fontWeight: '600',
+                transition: 'background-color 0.3s'
+              }}
+              onClick={() => setActiveTab('products')}
+            >
+              Products
+            </button>
+          </div>
 
       {activeTab === 'orders' && (
         <div className="orders-section">
@@ -227,6 +257,8 @@ export const AdminScreen = () => {
           )}
         </div>
       )}
-    </div>
+        </div>
+      </div>
+    </>
   );
 };

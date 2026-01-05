@@ -1,171 +1,283 @@
-import React, { useState, useContext } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { authService } from '../services/api';
-import { AuthContext } from '../context/AuthContext';
-import { validateEmail, validatePassword } from '../utils/validation';
-import './Auth.css';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Navbar } from '../components/Navbar';
+import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState({});
-  const [touched, setTouched] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [generalError, setGeneralError] = useState('');
-  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const validateField = (name, value) => {
-    let error = '';
-    if (name === 'email') {
-      const validation = validateEmail(value);
-      error = validation.valid ? '' : validation.message;
-    } else if (name === 'password') {
-      const validation = validatePassword(value);
-      error = validation.valid ? '' : validation.message;
-    }
-    return error;
-  };
-
-  const handleBlur = (e) => {
-    const { name } = e.target;
-    setTouched({ ...touched, [name]: true });
-    const error = validateField(name, name === 'email' ? email : password);
-    if (error) {
-      setErrors({ ...errors, [name]: error });
-    } else {
-      const newErrors = { ...errors };
-      delete newErrors[name];
-      setErrors(newErrors);
-    }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'email') setEmail(value);
-    else if (name === 'password') setPassword(value);
-    
-    if (touched[name]) {
-      const error = validateField(name, value);
-      if (error) {
-        setErrors({ ...errors, [name]: error });
-      } else {
-        const newErrors = { ...errors };
-        delete newErrors[name];
-        setErrors(newErrors);
-      }
-    }
-  };
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setGeneralError('');
-
-    // Validate all fields
-    const emailError = validateField('email', email);
-    const passwordError = validateField('password', password);
-
-    if (emailError || passwordError) {
-      setErrors({
-        ...(emailError && { email: emailError }),
-        ...(passwordError && { password: passwordError }),
-      });
-      setTouched({ email: true, password: true });
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      const response = await authService.login(email, password);
-      login(response.data.user, response.data.token);
-      navigate('/products');
-    } catch (err) {
-      setGeneralError(err.response?.data?.error || 'Login failed. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const isFormValid = email && password && !errors.email && !errors.password;
-
   return (
-    <div className="auth-container">
-      <div className="auth-form animate-fade-up">
-        <h1>Login</h1>
-        <p className="auth-subtitle">Welcome back! Please sign in to continue.</p>
-        {generalError && <div className="alert alert-error">{generalError}</div>}
+    <>
+      <Navbar />
+      <div style={{
+        background: 'linear-gradient(180deg, #2d1810 0%, #1a0f0a 50%, #0d0603 100%)',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '120px 20px 40px',
+        paddingTop: '120px',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        {/* Animated Background Orbs */}
+        <div style={{
+          position: 'absolute',
+          top: '-100px',
+          right: '-100px',
+          width: '400px',
+          height: '400px',
+          background: 'radial-gradient(circle, rgba(139,69,19,0.3) 0%, transparent 70%)',
+          borderRadius: '50%',
+          filter: 'blur(60px)',
+          pointerEvents: 'none'
+        }} />
+        <div style={{
+          position: 'absolute',
+          bottom: '-50px',
+          left: '-100px',
+          width: '300px',
+          height: '300px',
+          background: 'radial-gradient(circle, rgba(160,82,45,0.2) 0%, transparent 70%)',
+          borderRadius: '50%',
+          filter: 'blur(60px)',
+          pointerEvents: 'none'
+        }} />
 
-        <form onSubmit={handleLogin}>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              value={email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              placeholder="you@example.com"
-              autoComplete="email"
-              className={errors.email && touched.email ? 'input-error' : ''}
-            />
-            {errors.email && touched.email && (
-              <div className="form-error">{errors.email}</div>
-            )}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          style={{
+            background: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(20px)',
+            borderRadius: '32px',
+            padding: '60px 50px',
+            boxShadow: '0 25px 50px rgba(0, 0, 0, 0.2)',
+            border: '1px solid rgba(255, 255, 255, 0.3)',
+            maxWidth: '450px',
+            width: '100%',
+            position: 'relative',
+            zIndex: 2
+          }}
+        >
+          {/* Header */}
+          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+            <h1 style={{
+              fontSize: '32px',
+              fontWeight: '800',
+              color: '#1a1a1a',
+              marginBottom: '12px'
+            }}>
+              Welcome Back
+            </h1>
+            <p style={{
+              fontSize: '16px',
+              color: '#6b7280'
+            }}>
+              Sign in to your account
+            </p>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <div className="password-wrapper">
-              <input
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                name="password"
-                value={password}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Enter your password"
-                autoComplete="current-password"
-                className={errors.password && touched.password ? 'input-error' : ''}
-              />
-              <button
-                type="button"
-                className="toggle-visibility"
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
-                onClick={() => setShowPassword((v) => !v)}
-              >
-                {showPassword ? 'Hide' : 'Show'}
-              </button>
-            </div>
-            {errors.password && touched.password && (
-              <div className="form-error">{errors.password}</div>
-            )}
-            {!errors.password && !touched.password && (
-              <div className="form-helper">Minimum 6 characters.</div>
-            )}
+          {/* Form */}
+          <form onSubmit={(e) => e.preventDefault()} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            {/* Email Field */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <label style={{
+                display: 'block',
+                fontSize: '14px',
+                fontWeight: '600',
+                color: '#d2a679',
+                marginBottom: '8px'
+              }}>
+                Email Address
+              </label>
+              <div style={{
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+                <Mail size={18} style={{
+                  position: 'absolute',
+                  left: '16px',
+                  color: '#d2a679'
+                }} />
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '14px 16px 14px 48px',
+                    fontSize: '16px',
+                    border: '2px solid rgba(212, 165, 116, 0.2)',
+                    borderRadius: '14px',
+                    background: 'rgba(212, 165, 116, 0.05)',
+                    outline: 'none',
+                    transition: 'all 0.3s',
+                    fontFamily: 'inherit',
+                    color: '#1a1a1a'
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#d4a574';
+                    e.target.style.background = 'rgba(212, 165, 116, 0.1)';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = 'rgba(212, 165, 116, 0.2)';
+                    e.target.style.background = 'rgba(212, 165, 116, 0.05)';
+                  }}
+                />
+              </div>
+            </motion.div>
+
+            {/* Password Field */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <label style={{
+                display: 'block',
+                fontSize: '14px',
+                fontWeight: '600',
+                color: '#d2a679',
+                marginBottom: '8px'
+              }}>
+                Password
+              </label>
+              <div style={{
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+                <Lock size={18} style={{
+                  position: 'absolute',
+                  left: '16px',
+                  color: '#d2a679'
+                }} />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '14px 48px 14px 48px',
+                    fontSize: '16px',
+                    border: '2px solid rgba(212, 165, 116, 0.2)',
+                    borderRadius: '14px',
+                    background: 'rgba(212, 165, 116, 0.05)',
+                    outline: 'none',
+                    transition: 'all 0.3s',
+                    fontFamily: 'inherit',
+                    color: '#1a1a1a'
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#d4a574';
+                    e.target.style.background = 'rgba(212, 165, 116, 0.1)';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = 'rgba(212, 165, 116, 0.2)';
+                    e.target.style.background = 'rgba(212, 165, 116, 0.05)';
+                  }}
+                />
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: 'absolute',
+                    right: '14px',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#d2a679'
+                  }}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </motion.button>
+              </div>
+            </motion.div>
+
+            {/* Sign In Button */}
+            <motion.button
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              type="submit"
+              style={{
+                padding: '14px',
+                background: 'linear-gradient(135deg, #d4a574 0%, #c9985a 100%)',
+                color: '#1a0f0a',
+                border: 'none',
+                borderRadius: '12px',
+                fontSize: '16px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                marginTop: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '10px',
+                boxShadow: '0 10px 30px rgba(212, 165, 116, 0.3)',
+                transition: 'all 0.3s'
+              }}
+            >
+              Sign In
+              <ArrowRight size={18} />
+            </motion.button>
+          </form>
+
+          {/* Divider */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            margin: '24px 0',
+            color: '#d2a679'
+          }}>
+            <div style={{ flex: 1, height: '1px', background: 'rgba(212, 165, 116, 0.2)' }} />
+            <span style={{ fontSize: '13px' }}>OR</span>
+            <div style={{ flex: 1, height: '1px', background: 'rgba(212, 165, 116, 0.2)' }} />
           </div>
 
-          <button 
-            type="submit" 
-            className="btn-primary" 
-            disabled={isLoading || !isFormValid}
-          >
-            {isLoading ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
-
-        <p className="auth-link">
-          Don't have an account? <Link to="/signup">Sign up here</Link>
-        </p>
-
-        <div className="demo-info">
-          <p><strong>Demo Credentials:</strong></p>
-          <p>User: user@example.com · user123</p>
-          <p>Admin: admin@example.com · admin123</p>
-        </div>
+          {/* Footer */}
+          <p style={{
+            textAlign: 'center',
+            fontSize: '14px',
+            color: '#d2a679'
+          }}>
+            Don't have an account?{' '}
+            <button
+              onClick={() => navigate('/signup')}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#d4a574',
+                fontWeight: '700',
+                cursor: 'pointer',
+                fontSize: '14px',
+                textDecoration: 'underline'
+              }}
+            >
+              Sign up
+            </button>
+          </p>
+        </motion.div>
       </div>
-    </div>
+    </>
   );
 };

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { orderService, productService } from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import './Admin.css';
+import { Navbar } from '../components/Navbar';
 
 export const DashboardScreen = () => {
   const navigate = useNavigate();
@@ -80,33 +80,36 @@ export const DashboardScreen = () => {
   }
 
   return (
-    <div className="container dashboard-container">
-      <h1>Analytics Dashboard</h1>
+    <>
+      <Navbar />
+      <div style={{ paddingTop: '65px', minHeight: '100vh', backgroundColor: '#f5f5f5', padding: '20px' }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <h1 style={{ fontSize: '32px', color: '#1d1d1f', marginBottom: '30px', fontWeight: '600' }}>Analytics Dashboard</h1>
 
-      <div className="stats-grid">
-        <div className="stat-card">
-          <div className="stat-icon">📦</div>
-          <div className="stat-content">
-            <p className="stat-label">Total Orders</p>
-            <p className="stat-value">{stats.totalOrders}</p>
-          </div>
-        </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginBottom: '30px' }}>
+            <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '20px', display: 'flex', alignItems: 'center', gap: '15px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+              <div style={{ fontSize: '32px' }}>📦</div>
+              <div>
+                <p style={{ fontSize: '12px', color: '#666', margin: '0 0 4px 0' }}>Total Orders</p>
+                <p style={{ fontSize: '24px', color: '#1d1d1f', fontWeight: '600', margin: '0' }}>{stats.totalOrders}</p>
+              </div>
+            </div>
 
-        <div className="stat-card">
-          <div className="stat-icon">💰</div>
-          <div className="stat-content">
-            <p className="stat-label">Total Revenue</p>
-            <p className="stat-value">₹{stats.totalRevenue}</p>
-          </div>
-        </div>
+            <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '20px', display: 'flex', alignItems: 'center', gap: '15px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+              <div style={{ fontSize: '32px' }}>💰</div>
+              <div>
+                <p style={{ fontSize: '12px', color: '#666', margin: '0 0 4px 0' }}>Total Revenue</p>
+                <p style={{ fontSize: '24px', color: '#1d1d1f', fontWeight: '600', margin: '0' }}>₹{stats.totalRevenue}</p>
+              </div>
+            </div>
 
-        <div className="stat-card">
-          <div className="stat-icon">🛍️</div>
-          <div className="stat-content">
-            <p className="stat-label">Total Products</p>
-            <p className="stat-value">{stats.totalProducts}</p>
-          </div>
-        </div>
+            <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '20px', display: 'flex', alignItems: 'center', gap: '15px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+              <div style={{ fontSize: '32px' }}>🛍️</div>
+              <div>
+                <p style={{ fontSize: '12px', color: '#666', margin: '0 0 4px 0' }}>Total Products</p>
+                <p style={{ fontSize: '24px', color: '#1d1d1f', fontWeight: '600', margin: '0' }}>{stats.totalProducts}</p>
+              </div>
+            </div>
 
         <div className="stat-card">
           <div className="stat-icon">⏳</div>
@@ -181,6 +184,8 @@ export const DashboardScreen = () => {
           )}
         </div>
       </div>
-    </div>
+        </div>
+      </div>
+    </>
   );
 };

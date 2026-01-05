@@ -1,363 +1,552 @@
-import React, { useState, useEffect, useContext, useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import { productService } from '../services/api';
+import React, { useState, useEffect, useContext } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Search, Filter, Grid, List, Heart, ShoppingBag } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Navbar } from '../components/Navbar';
 import { CartContext } from '../context/CartContext';
-import { ToastContext } from '../context/ToastContext';
-import { SkeletonGrid } from '../components/Skeleton';
-import './ProductList.css';
+import { WishlistContext } from '../context/WishlistContext';
+import { products as allProducts } from '../services/api';
 
-export const ProductListScreen = () => {
-  const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState('All');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [priceRange, setPriceRange] = useState([0, 2000]);
-  const [sortBy, setSortBy] = useState('featured');
+const ProductListScreen = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [filteredProducts, setFilteredProducts] = useState(allProducts);
+  const [viewMode, setViewMode] = useState('grid');
+  const [isLoading, setIsLoading] = useState(false);
+  const [sortBy, setSortBy] = useState('popular');
   const { addToCart } = useContext(CartContext);
-  const { showToast } = useContext(ToastContext);
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useContext(WishlistContext);
+  const navigate = useNavigate();
 
-  const filters = ['All', 'Dark', 'Milk', 'Fruit', 'Nut', 'Bestseller'];
-
-  // Mock products for demo/development
-  const mockProducts = [
-    {
-      id: '1',
-      name: 'Dark Chocolate Bliss',
-      description: 'Rich 72% dark chocolate with notes of espresso and berries',
-      price: 499,
-      category: 'Dark',
-      imageUrl: 'https://images.unsplash.com/photo-1599599810694-e5ffc5e0e8b4?w=400&h=400&fit=crop',
-    },
-    {
-      id: '2',
-      name: 'Milk Chocolate Dream',
-      description: 'Smooth milk chocolate with creamy caramel filling',
-      price: 399,
-      category: 'Milk',
-      imageUrl: 'https://images.unsplash.com/photo-1599599810694-e5ffc5e0e8b4?w=400&h=400&fit=crop',
-    },
-    {
-      id: '3',
-      name: 'Fruit & Nut Medley',
-      description: 'Dark chocolate studded with dried fruits and roasted nuts',
-      price: 599,
-      category: 'Fruit',
-      imageUrl: 'https://images.unsplash.com/photo-1599599810694-e5ffc5e0e8b4?w=400&h=400&fit=crop',
-    },
-  ];
+  const categories = ['All', 'Dark Chocolate', 'Milk Chocolate', 'White Chocolate', 'Truffles', 'Gift Boxes'];
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = async () => {
-    try {
-      setIsLoading(true);
-      setError('');
-      
-      const response = await productService.getAll();
-      // Handle different response formats
-      let data = response.data;
-      
-      // If data is wrapped in another data property, unwrap it
-      if (data && typeof data === 'object' && data.data && Array.isArray(data.data)) {
-        data = data.data;
-      }
-      
-      // Ensure data is always an array
-      if (!Array.isArray(data) || data.length === 0) {
-        console.warn('API response is not an array or empty:', data);
-        // Use mock data as fallback
-        setProducts(mockProducts);
-        setError('Backend not connected. Showing demo products.');
-      } else {
-        setProducts(data);
-      }
-    } catch (err) {
-      console.error('Error fetching products:', err);
-      // On error, show mock products
-      setProducts(mockProducts);
-      setError('Backend connection failed. Showing demo products. Please deploy backend to Railway.');
-    } finally {
+    setIsLoading(true);
+    setTimeout(() => {
+      filterProducts();
       setIsLoading(false);
-    }
-  };
+    }, 300);
+  }, [searchTerm, selectedCategory, sortBy]);
 
-  const handleAddToCart = (product) => {
-    console.log('Adding to cart - product:', product);
-    addToCart(product);
-    showToast(`✓ ${product.name} added to cart`, 'success', 2500);
-  };
-
-  const filteredProducts = useMemo(() => {
-    if (!Array.isArray(products)) {
-      console.warn('Products is not an array:', products);
-      return [];
-    }
-
-    let filtered = [...products];
-
-    // Filter by category
-    if (selectedFilter !== 'All') {
-      const term = selectedFilter.toLowerCase();
-      filtered = filtered.filter((p) =>
-        [p.name, p.description, p.category]
-          .filter(Boolean)
-          .some((field) => field.toLowerCase().includes(term))
-      );
-    }
-
-    // Filter by search query
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter((p) =>
-        p.name.toLowerCase().includes(query) ||
-        p.description.toLowerCase().includes(query)
-      );
-    }
-
-    // Filter by price range
-    filtered = filtered.filter((p) => {
-      const price = parseFloat(p.price);
-      return price >= priceRange[0] && price <= priceRange[1];
+  const filterProducts = () => {
+    let filtered = allProducts.filter((product) => {
+      const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           product.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
+      return matchesSearch && matchesCategory;
     });
 
-    // Sort products
     if (sortBy === 'price-low') {
-      filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+      filtered.sort((a, b) => a.price - b.price);
     } else if (sortBy === 'price-high') {
-      filtered.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-    } else if (sortBy === 'name') {
-      filtered.sort((a, b) => a.name.localeCompare(b.name));
+      filtered.sort((a, b) => b.price - a.price);
+    } else if (sortBy === 'rating') {
+      filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
     }
 
-    return filtered;
-  }, [products, selectedFilter, searchQuery, priceRange, sortBy]);
+    setFilteredProducts(filtered);
+  };
 
-  if (isLoading) {
-    return <SkeletonGrid count={6} />;
+  if (isLoading && filteredProducts.length === 0) {
+    return (
+      <>
+        <Navbar />
+        <div style={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'linear-gradient(180deg, #2d1810 0%, #1a0f0a 50%, #0d0603 100%)',
+          paddingTop: '70px'
+        }}>
+          <motion.div
+            animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            style={{
+              width: '80px',
+              height: '80px',
+              borderRadius: '16px',
+              background: 'rgba(212, 165, 116, 0.2)',
+              backdropFilter: 'blur(20px)',
+              border: '2px solid rgba(212, 165, 116, 0.3)'
+            }}
+          />
+        </div>
+      </>
+    );
   }
 
   return (
     <>
-      <section className="hero">
-        <div className="hero-overlay" />
-        <div className="hero-content animate-fade-up">
-          <p className="hero-kicker">Bean-to-bar craftsmanship</p>
-          <h1>Small-batch chocolates, crafted with care.</h1>
-          <p className="hero-subtitle">
-            Taste layered cocoa notes, slow roasting, and honest ingredients inspired by the finest chocolate boutiques.
-          </p>
-          <div className="hero-actions">
-            <a className="hero-btn" href="#products">Shop Collection</a>
-            <a className="hero-link" href="#story">Our Story</a>
-          </div>
-        </div>
-      </section>
+      <Navbar />
+      <div style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(180deg, #2d1810 0%, #1a0f0a 50%, #0d0603 100%)',
+        paddingTop: '70px',
+        paddingBottom: '60px'
+      }}>
+        {/* Header Section */}
+        <section style={{
+          background: 'linear-gradient(135deg, rgba(139, 69, 19, 0.2) 0%, rgba(101, 50, 15, 0.1) 100%)',
+          backdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(212, 165, 116, 0.1)',
+          padding: '50px 20px',
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          <div style={{
+            position: 'absolute',
+            top: '-50px',
+            right: '-100px',
+            width: '300px',
+            height: '300px',
+            background: 'radial-gradient(circle, rgba(139,69,19,0.2) 0%, transparent 70%)',
+            borderRadius: '50%',
+            filter: 'blur(60px)',
+            pointerEvents: 'none'
+          }} />
 
-      <div className="container" id="products">
-        <div className="section-header animate-fade-up">
-          <div>
-            <p className="section-kicker">Signature range</p>
-            <h2>Explore our chocolates</h2>
-          </div>
-          <div className="section-note">{filteredProducts.length} items · Small batches, crafted with care.</div>
-        </div>
-
-        {/* Search Bar */}
-        <div className="search-bar-container">
-          <input
-            type="text"
-            className="search-bar"
-            placeholder="Search chocolates..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            aria-label="Search products"
-          />
-        </div>
-
-        {/* Advanced Filters */}
-        <div className="advanced-filters">
-          <div className="filter-group">
-            <label htmlFor="sort-select">Sort by:</label>
-            <select
-              id="sort-select"
-              className="filter-select"
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
+          <div style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              style={{
+                fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+                fontWeight: '800',
+                background: 'linear-gradient(135deg, #f5deb3 0%, #d2a679 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                marginBottom: '16px',
+                textAlign: 'center',
+                letterSpacing: '-0.02em',
+                fontFamily: 'Georgia, serif'
+              }}
             >
-              <option value="featured">Featured</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="name">Name: A to Z</option>
-            </select>
-          </div>
-
-          <div className="filter-group">
-            <label htmlFor="price-range">Max Price: ₹{priceRange[1]}</label>
-            <input
-              id="price-range"
-              type="range"
-              min="0"
-              max="2000"
-              value={priceRange[1]}
-              onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
-              className="price-slider"
-            />
-          </div>
-        </div>
-
-        <div className="filters">
-          {filters.map((f) => (
-            <button
-              key={f}
-              type="button"
-              className={`filter-chip ${selectedFilter === f ? 'active' : ''}`}
-              onClick={() => setSelectedFilter(f)}
+              Discover Premium Chocolates
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              style={{
+                fontSize: '1.1rem',
+                color: '#d2a679',
+                textAlign: 'center',
+                marginBottom: '40px',
+                maxWidth: '600px',
+                margin: '20px auto'
+              }}
             >
-              {f}
-            </button>
-          ))}
-        </div>
+              Explore our curated collection of luxury chocolate selections
+            </motion.p>
 
-        {error && (
-          <div className="alert alert-warning" style={{ marginBottom: '20px' }}>
-            {error}
-            <button onClick={fetchProducts} className="btn-primary" style={{ marginLeft: '10px', marginTop: '8px' }}>
-              Retry
-            </button>
+            {/* Search Bar */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              style={{ maxWidth: '600px', margin: '0 auto', position: 'relative' }}
+            >
+              <Search size={20} style={{
+                position: 'absolute',
+                left: '18px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                color: '#d2a679'
+              }} />
+              <input
+                type="text"
+                placeholder="Search chocolates..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '16px 20px 16px 50px',
+                  fontSize: '16px',
+                  border: '2px solid rgba(212, 165, 116, 0.3)',
+                  borderRadius: '16px',
+                  background: 'rgba(212, 165, 116, 0.08)',
+                  backdropFilter: 'blur(10px)',
+                  boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)',
+                  outline: 'none',
+                  transition: 'all 0.3s',
+                  fontFamily: 'inherit',
+                  color: '#f5deb3'
+                }}
+                onFocus={(e) => {
+                  e.target.style.boxShadow = '0 15px 60px rgba(212, 165, 116, 0.15)';
+                  e.target.style.borderColor = '#d4a574';
+                  e.target.style.background = 'rgba(212, 165, 116, 0.12)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.2)';
+                  e.target.style.borderColor = 'rgba(212, 165, 116, 0.3)';
+                  e.target.style.background = 'rgba(212, 165, 116, 0.08)';
+                }}
+              />
+            </motion.div>
           </div>
-        )}
+        </section>
 
-        <div className="products-grid">
-          {filteredProducts.length === 0 ? (
-            <p>No products available</p>
-          ) : (
-            filteredProducts.map((product) => (
-              <div key={product.id} className="product-card">
-                {product.imageUrl && (
-                  <div className="product-image-wrap">
-                    <img src={product.imageUrl} alt={product.name} />
-                  </div>
-                )}
-                <div className="product-body">
-                  <div className="product-top">
-                    <h3>{product.name}</h3>
-                    <span className="price">₹{parseFloat(product.price).toFixed(2)}</span>
-                  </div>
-                  {product.category && (
-                    <p className="pill pill-muted">{product.category}</p>
-                  )}
-                  <p className="description">{product.description}</p>
-                  <div className="product-actions">
-                    <Link to={`/products/${product.id}`} className="ghost-btn">View Details</Link>
-                    <button
-                      onClick={() => handleAddToCart(product)}
-                      className="btn-primary product-cta"
+        {/* Filters & Controls */}
+        <section style={{
+          background: 'linear-gradient(135deg, rgba(139, 69, 19, 0.15) 0%, rgba(101, 50, 15, 0.08) 100%)',
+          backdropFilter: 'blur(20px)',
+          padding: '25px 20px',
+          position: 'sticky',
+          top: '70px',
+          zIndex: 100,
+          boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)',
+          borderBottom: '1px solid rgba(212, 165, 116, 0.1)'
+        }}>
+          <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+            <div style={{
+              display: 'flex',
+              gap: '20px',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between'
+            }}>
+              {/* Categories */}
+              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', flex: 1, minWidth: '300px' }}>
+                {categories.map((category) => (
+                  <motion.button
+                    key={category}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setSelectedCategory(category)}
+                    style={{
+                      padding: '10px 20px',
+                      fontSize: '13px',
+                      fontWeight: '600',
+                      borderRadius: '50px',
+                      border: selectedCategory === category ? '2px solid #d4a574' : '2px solid rgba(212, 165, 116, 0.2)',
+                      background: selectedCategory === category
+                        ? 'linear-gradient(135deg, #d4a574 0%, #c9985a 100%)'
+                        : 'rgba(212, 165, 116, 0.05)',
+                      color: selectedCategory === category ? '#1a0f0a' : '#d2a679',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s',
+                      boxShadow: selectedCategory === category
+                        ? '0 4px 12px rgba(212, 165, 116, 0.3)'
+                        : 'none'
+                    }}
+                  >
+                    {category}
+                  </motion.button>
+                ))}
+              </div>
+
+              {/* Sort Dropdown */}
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                style={{
+                  padding: '10px 15px',
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  borderRadius: '8px',
+                  border: '2px solid rgba(212, 165, 116, 0.2)',
+                  background: 'rgba(212, 165, 116, 0.05)',
+                  color: '#d2a679',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s'
+                }}
+              >
+                <option value="popular">Most Popular</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Highest Rated</option>
+              </select>
+
+              {/* View Mode Toggle */}
+              <div style={{ display: 'flex', gap: '8px', borderRadius: '8px', background: 'rgba(212, 165, 116, 0.05)', padding: '6px' }}>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setViewMode('grid')}
+                  style={{
+                    padding: '8px 12px',
+                    background: viewMode === 'grid' ? '#d4a574' : 'transparent',
+                    color: viewMode === 'grid' ? '#1a0f0a' : '#d2a679',
+                    border: 'none',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <Grid size={16} />
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setViewMode('list')}
+                  style={{
+                    padding: '8px 12px',
+                    background: viewMode === 'list' ? '#d4a574' : 'transparent',
+                    color: viewMode === 'list' ? '#1a0f0a' : '#d2a679',
+                    border: 'none',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <List size={16} />
+                </motion.button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Products Display */}
+        <section style={{
+          maxWidth: '1400px',
+          margin: '60px auto 0',
+          padding: '0 20px'
+        }}>
+          <AnimatePresence mode="wait">
+            {filteredProducts.length === 0 ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                style={{
+                  textAlign: 'center',
+                  padding: '80px 20px',
+                  color: '#d2a679'
+                }}
+              >
+                <div style={{ fontSize: '4rem', marginBottom: '20px' }}>🍫</div>
+                <h3 style={{ fontSize: '1.5rem', marginBottom: '10px', color: '#f5deb3' }}>No Chocolates Found</h3>
+                <p>Try adjusting your search or filters to discover more delicious options.</p>
+              </motion.div>
+            ) : (
+              <motion.div
+                layout
+                style={{
+                  display: viewMode === 'grid'
+                    ? 'grid'
+                    : 'flex',
+                  gridTemplateColumns: viewMode === 'grid' ? 'repeat(auto-fill, minmax(280px, 1fr))' : 'none',
+                  flexDirection: viewMode === 'list' ? 'column' : 'row',
+                  gap: viewMode === 'grid' ? '30px' : '20px',
+                  width: '100%'
+                }}
+              >
+                {filteredProducts.map((product, index) => (
+                  <motion.div
+                    key={product.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ delay: index * 0.05 }}
+                    whileHover={{ y: -5, boxShadow: '0 20px 60px rgba(212, 165, 116, 0.15)' }}
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(139, 69, 19, 0.15) 0%, rgba(101, 50, 15, 0.08) 100%)',
+                      backdropFilter: 'blur(20px)',
+                      border: '1px solid rgba(212, 165, 116, 0.2)',
+                      borderRadius: '16px',
+                      overflow: 'hidden',
+                      transition: 'all 0.3s ease',
+                      cursor: 'pointer',
+                      padding: viewMode === 'list' ? '20px' : '0',
+                      display: viewMode === 'list' ? 'flex' : 'flex-direction',
+                      gap: viewMode === 'list' ? '20px' : '0'
+                    }}
+                  >
+                    {/* Badge */}
+                    {index < 3 && (
+                      <div style={{
+                        position: 'absolute',
+                        top: '15px',
+                        right: viewMode === 'list' ? 'auto' : '15px',
+                        left: viewMode === 'list' ? '15px' : 'auto',
+                        background: 'linear-gradient(135deg, #d4a574 0%, #c9985a 100%)',
+                        color: '#1a0f0a',
+                        padding: '6px 12px',
+                        borderRadius: '20px',
+                        fontSize: '11px',
+                        fontWeight: '700',
+                        zIndex: 10,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                      }}>
+                        {index === 0 ? 'Trending' : index === 1 ? 'New' : 'Premium'}
+                      </div>
+                    )}
+
+                    {/* Wishlist Button */}
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => {
+                        if (isInWishlist(product.id)) {
+                          removeFromWishlist(product.id);
+                        } else {
+                          addToWishlist(product);
+                        }
+                      }}
+                      style={{
+                        position: 'absolute',
+                        top: '15px',
+                        right: '15px',
+                        background: isInWishlist(product.id) 
+                          ? 'rgba(212, 165, 116, 0.3)'
+                          : 'rgba(139, 69, 19, 0.2)',
+                        border: `1px solid ${isInWishlist(product.id) ? 'rgba(212, 165, 116, 0.5)' : 'rgba(212, 165, 116, 0.2)'}`,
+                        borderRadius: '50%',
+                        width: '45px',
+                        height: '45px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        color: isInWishlist(product.id) ? '#f5deb3' : '#d4a574',
+                        zIndex: 15,
+                        backdropFilter: 'blur(10px)'
+                      }}
                     >
-                      Add to Cart
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
+                      <Heart 
+                        size={22} 
+                        fill={isInWishlist(product.id) ? 'currentColor' : 'none'}
+                      />
+                    </motion.button>
+
+                    {/* Image */}
+                    <div style={{
+                      position: 'relative',
+                      width: viewMode === 'list' ? '200px' : '100%',
+                      height: viewMode === 'list' ? '200px' : '250px',
+                      minWidth: viewMode === 'list' ? '200px' : 'auto',
+                      overflow: 'hidden',
+                      background: 'rgba(0, 0, 0, 0.2)'
+                    }}>
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          transition: 'transform 0.3s ease'
+                        }}
+                        onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+                        onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                      />
+                    </div>
+
+                    {/* Content */}
+                    <div style={{
+                      padding: viewMode === 'list' ? '0' : '20px',
+                      flex: 1,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between'
+                    }}>
+                      <div>
+                        {/* Rating */}
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          marginBottom: '8px'
+                        }}>
+                          <span style={{ color: '#d4a574', fontSize: '14px', fontWeight: '600' }}>
+                            {'⭐'.repeat(Math.round(product.rating || 4.5))}
+                          </span>
+                          <span style={{ color: '#d2a679', fontSize: '12px' }}>
+                            {product.rating || 4.5}
+                          </span>
+                        </div>
+
+                        {/* Name */}
+                        <h3 style={{
+                          color: '#f5deb3',
+                          fontSize: '16px',
+                          fontWeight: '700',
+                          marginBottom: '6px',
+                          lineHeight: '1.4',
+                          fontFamily: 'Georgia, serif'
+                        }}>
+                          {product.name}
+                        </h3>
+
+                        {/* Description */}
+                        <p style={{
+                          color: '#d2a679',
+                          fontSize: '13px',
+                          marginBottom: '12px',
+                          lineHeight: '1.4',
+                          opacity: 0.9
+                        }}>
+                          {product.description}
+                        </p>
+                      </div>
+
+                      {/* Price & Button */}
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        gap: '10px',
+                        marginTop: '16px',
+                        paddingTop: '16px',
+                        borderTop: '1px solid rgba(212, 165, 116, 0.1)'
+                      }}>
+                        <div>
+                          <p style={{ color: '#d2a679', fontSize: '12px', marginBottom: '4px' }}>Price</p>
+                          <p style={{
+                            background: 'linear-gradient(135deg, #d4a574 0%, #d2a679 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                            fontSize: '18px',
+                            fontWeight: '700'
+                          }}>
+                            ${product.price}
+                          </p>
+                        </div>
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => addToCart(product)}
+                          style={{
+                            padding: '10px 16px',
+                            background: 'linear-gradient(135deg, #d4a574 0%, #c9985a 100%)',
+                            color: '#1a0f0a',
+                            border: 'none',
+                            borderRadius: '8px',
+                            fontWeight: '600',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s',
+                            boxShadow: '0 4px 15px rgba(212, 165, 116, 0.2)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px'
+                          }}
+                        >
+                          <ShoppingBag size={16} />
+                          Add
+                        </motion.button>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </section>
       </div>
-      {/* Our Story */}
-      <section id="story" className="story-section">
-        <div className="container">
-          <div className="section-header animate-fade-up">
-            <div>
-              <p className="section-kicker">About us</p>
-              <h2>Our Story</h2>
-            </div>
-          </div>
-          <div className="story-content animate-fade-up">
-            <p>
-              Founded in 2015, our chocolate journey began with a passion for authentic, bean-to-bar craftsmanship. Inspired by the finest
-              chocolatiers, we source single-origin cacao beans from sustainable farms around the world. Each bar is handcrafted in small batches,
-              ensuring unparalleled flavor and quality.
-            </p>
-            <p>
-              Our mission is to bring the art of chocolate-making back to its roots, celebrating the rich history and cultural significance of this beloved
-              treat. From the careful selection of beans to the meticulous tempering process, every step is guided by tradition and innovation.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Craftsmanship */}
-      <section className="craftsmanship-section">
-        <div className="container">
-          <div className="section-header animate-fade-up">
-            <div>
-              <p className="section-kicker">Our process</p>
-              <h2>Craftsmanship</h2>
-            </div>
-          </div>
-          <div className="craftsmanship-content">
-            <div className="craftsmanship-grid">
-              <div className="craftsmanship-item animate-fade-up">
-                <h3>Bean Selection</h3>
-                <p>
-                  We carefully select premium cacao beans from regions known for their exceptional quality, ensuring the foundation of our chocolates is
-                  second to none.
-                </p>
-              </div>
-              <div className="craftsmanship-item animate-fade-up">
-                <h3>Roasting</h3>
-                <p>
-                  Our beans are roasted slowly at low temperatures to develop complex flavor profiles, preserving the natural aromas and nuances of each
-                  origin.
-                </p>
-              </div>
-              <div className="craftsmanship-item animate-fade-up">
-                <h3>Conching</h3>
-                <p>
-                  The conching process refines the chocolate for up to 72 hours, creating a smooth texture and allowing flavors to fully develop.
-                </p>
-              </div>
-              <div className="craftsmanship-item animate-fade-up">
-                <h3>Tempering</h3>
-                <p>
-                  Precise tempering ensures our chocolate has the perfect snap, shine, and mouthfeel that defines exceptional craftsmanship.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="footer">
-        <div className="container">
-          <div className="footer-content animate-fade-up">
-            <div className="footer-section">
-              <h3>Chocolate App</h3>
-              <p>Small-batch chocolates, crafted with care.</p>
-            </div>
-            <div className="footer-section">
-              <h4>Quick Links</h4>
-              <ul>
-                <li><a href="#products">Shop</a></li>
-                <li><a href="#story">Our Story</a></li>
-                <li><Link to="/cart">Cart</Link></li>
-                <li><Link to="/profile">Profile</Link></li>
-              </ul>
-            </div>
-            <div className="footer-section">
-              <h4>Contact</h4>
-              <p>Email: info@chocolateapp.com</p>
-              <p>Phone: (555) 123-4567</p>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <p>&copy; 2025 Chocolate App. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
     </>
   );
 };
+
+export default ProductListScreen;

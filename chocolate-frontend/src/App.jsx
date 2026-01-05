@@ -2,32 +2,35 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
+import { WishlistProvider } from './context/WishlistContext';
 import { ToastProvider } from './context/ToastContext';
 import { Navbar } from './components/Navbar';
 import { Toast } from './components/Toast';
 import { PrivateRoute, AdminRoute } from './components/ProtectedRoute';
 import { LoginScreen } from './screens/LoginScreen';
 import { SignupScreen } from './screens/SignupScreen';
-import { ProductListScreen } from './screens/ProductListScreen';
+import ProductListScreen from './screens/ProductListScreen';
 import { ProductDetailsScreen } from './screens/ProductDetailsScreen';
 import { CartScreen } from './screens/CartScreen';
 import { CheckoutScreen } from './screens/CheckoutScreen';
+import { WishlistScreen } from './screens/WishlistScreen';
 import { OrderConfirmationScreen } from './screens/OrderConfirmationScreen';
 import { ProfileScreen } from './screens/ProfileScreen';
 import { AdminScreen } from './screens/AdminScreen';
 import { AddProductScreen } from './screens/AddProductScreen';
 import { EditProductScreen } from './screens/EditProductScreen';
 import { DashboardScreen } from './screens/DashboardScreen';
-import { ChocolateShop } from './screens/LuxeChocolateShop';
+import { LuxeChocolateShop } from './screens/LuxeChocolateShop';
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <CartProvider>
-          <ToastProvider>
-            <Routes>
-              <Route path="/" element={<ChocolateShop />} />
+          <WishlistProvider>
+            <ToastProvider>
+              <Routes>
+              <Route path="/" element={<LuxeChocolateShop />} />
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
               <Route path="/products" element={<ProductListScreen />} />
@@ -35,11 +38,12 @@ function App() {
 
               <Route
                 path="/cart"
-                element={
-                  <PrivateRoute>
-                    <CartScreen />
-                  </PrivateRoute>
-                }
+                element={<CartScreen />}
+              />
+
+              <Route
+                path="/wishlist"
+                element={<WishlistScreen />}
               />
 
               <Route
@@ -105,7 +109,8 @@ function App() {
                 }
               />
             </Routes>
-          </ToastProvider>
+            </ToastProvider>
+          </WishlistProvider>
         </CartProvider>
       </AuthProvider>
     </BrowserRouter>

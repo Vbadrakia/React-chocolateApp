@@ -4,8 +4,8 @@ import { orderService } from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { ToastContext } from '../context/ToastContext';
 import { Modal } from '../components/Modal';
+import { Navbar } from '../components/Navbar';
 import { validateField, validateEmail, validatePhone } from '../utils/validation';
-import './Profile.css';
 
 export const ProfileScreen = () => {
   const navigate = useNavigate();
@@ -169,17 +169,27 @@ export const ProfileScreen = () => {
   };
 
   if (isLoading) {
-    return <div className="container"><p>Loading your profile...</p></div>;
+    return (
+      <>
+        <Navbar />
+        <div style={{ minHeight: '100vh', paddingTop: '100px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <p style={{ fontSize: '18px', color: '#6e6e73' }}>Loading your profile...</p>
+        </div>
+      </>
+    );
   }
 
   return (
-    <div className="container">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h1>My Profile</h1>
-        <button onClick={() => logout()} className="btn-logout">
-          Logout
-        </button>
-      </div>
+    <>
+      <Navbar />
+      <div style={{ minHeight: '100vh', paddingTop: '100px', paddingBottom: '60px', backgroundColor: '#ffffff' }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '40px 24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            <h1 style={{ fontSize: '40px', fontWeight: '700', color: '#1d1d1f', letterSpacing: '-0.03em' }}>My Profile</h1>
+            <button onClick={() => logout()} style={{ padding: '10px 20px', background: '#ff3b30', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}>
+              Logout
+            </button>
+          </div>
 
       <div className="profile-tabs">
         <button
@@ -501,7 +511,9 @@ export const ProfileScreen = () => {
           )}
         </div>
       )}
-    </div>
+        </div>
+      </div>
+    </>
   );
 };
 

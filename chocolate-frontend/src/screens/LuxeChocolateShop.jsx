@@ -1,204 +1,680 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ShoppingCart, Heart, Star, ChevronRight, Facebook, Award, Shield, Truck, Users, Sparkles, Package } from 'lucide-react';
+import { Navbar } from '../components/Navbar';
+import { ShoppingBag, Heart, Star, TrendingUp, Gift, Truck, Shield, Mail } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
-const ChocolateShop = () => {
+export const LuxeChocolateShop = () => {
   const navigate = useNavigate();
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const { scrollY } = useScroll();
+  const opacity = useTransform(scrollY, [0, 400], [1, 0.3]);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  const featuredProducts = [
+    {
+      id: 1,
+      name: 'Dark Chocolate Truffles',
+      price: 599,
+      image: 'https://images.unsplash.com/photo-1511381939415-e44015466834?w=500',
+      badge: 'Bestseller',
+      rating: 4.9
+    },
+    {
+      id: 2,
+      name: 'Milk Chocolate Delights',
+      price: 449,
+      image: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=500',
+      badge: 'New',
+      rating: 4.8
+    },
+    {
+      id: 3,
+      name: 'White Chocolate Dreams',
+      price: 529,
+      image: 'https://images.unsplash.com/photo-1511381939415-e44015466834?w=500',
+      badge: 'Premium',
+      rating: 4.7
+    }
+  ];
+
+  const categories = [
+    { name: 'Dark Chocolate', image: 'https://images.unsplash.com/photo-1511381939415-e44015466834?w=300' },
+    { name: 'Milk Chocolate', image: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=300' },
+    { name: 'White Chocolate', image: 'https://images.unsplash.com/photo-1511381939415-e44015466834?w=300' },
+    { name: 'Gift Boxes', image: 'https://images.unsplash.com/photo-1511381939415-e44015466834?w=300' }
+  ];
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#ffffff' }}>
-      {/* Hero Section */}
-      <section style={{ 
+    <>
+      <Navbar />
+      <div style={{
+        background: 'linear-gradient(180deg, #2d1810 0%, #1a0f0a 50%, #0d0603 100%)',
         minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'linear-gradient(135deg, #fef3c7 0%, #fce7f3 50%, #f3e8ff 100%)',
-        overflow: 'hidden',
+        paddingTop: '70px',
         position: 'relative',
-        padding: '20px'
+        overflow: 'hidden'
       }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto', textAlign: 'center', zIndex: 10, width: '100%' }}>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', background: 'linear-gradient(90deg, #d97706, #dc2626)', color: 'white', padding: '12px 24px', borderRadius: '9999px', marginBottom: '32px', fontSize: '14px', fontWeight: '600' }}>
-              <Sparkles style={{ width: 20, height: 20, marginRight: 8 }} />
-              Premium Artisan Chocolates
-            </div>
-            
-            <h1 style={{ fontSize: 'clamp(2.5rem, 8vw, 5rem)', fontWeight: 'bold', marginBottom: '24px', background: 'linear-gradient(135deg, #78350f, #991b1b, #6b21a8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-              Indulge in Luxury
-            </h1>
-            
-            <p style={{ fontSize: 'clamp(1rem, 2vw, 1.5rem)', color: '#374151', maxWidth: '800px', margin: '0 auto 48px', lineHeight: '1.6' }}>
-              Handcrafted Belgian chocolates made with the finest ingredients from around the world
-            </p>
-            
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center' }}>
-              <button onClick={() => navigate('/products')} style={{ padding: '16px 32px', fontSize: '16px', background: 'linear-gradient(90deg, #d97706, #dc2626)', color: 'white', borderRadius: '9999px', border: 'none', cursor: 'pointer', fontWeight: '600', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', transition: 'transform 0.2s', display: 'flex', alignItems: 'center', gap: '8px', minWidth: '200px', justifyContent: 'center' }} onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'} onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>
-                Shop Collection <ChevronRight style={{ width: 20, height: 20 }} />
-              </button>
-              <button onClick={() => navigate('/login')} style={{ padding: '16px 32px', fontSize: '16px', border: '2px solid #78350f', color: '#78350f', backgroundColor: 'transparent', borderRadius: '9999px', cursor: 'pointer', fontWeight: '600', transition: 'all 0.2s', minWidth: '200px' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#fef3c7'} onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
-                Sign In
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+        {/* Animated Chocolate Liquid Background */}
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: `
+            radial-gradient(circle at ${mousePos.x}px ${mousePos.y}px, 
+              rgba(139, 69, 19, 0.15) 0%, 
+              transparent 50%)
+          `,
+          pointerEvents: 'none',
+          zIndex: 0,
+          transition: 'background 0.3s ease-out'
+        }} />
 
-      {/* Stats Section */}
-      <section style={{ padding: '60px 20px', backgroundColor: '#ffffff' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 'bold', marginBottom: '16px', background: 'linear-gradient(90deg, #78350f, #991b1b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-              Trusted Worldwide
-            </h2>
-            <p style={{ fontSize: '18px', color: '#4b5563' }}>Excellence in every bite, proven by our achievements</p>
-          </div>
-          
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '32px' }}>
-            {[{ icon: Award, value: '50+', label: 'Awards' }, { icon: Users, value: '100K+', label: 'Customers' }, { icon: Truck, value: '25+', label: 'Years' }, { icon: Shield, value: '100%', label: 'Quality' }].map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} style={{ textAlign: 'center' }}>
-                  <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg, #fef3c7, #fecaca)', marginBottom: '20px' }}>
-                    <Icon style={{ width: 40, height: 40, color: '#78350f' }} />
-                  </div>
-                  <div style={{ fontSize: '36px', fontWeight: 'bold', color: '#78350f', marginBottom: '8px' }}>{stat.value}</div>
-                  <div style={{ fontSize: '16px', color: '#4b5563' }}>{stat.label}</div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+        {/* Hero Section */}
+        <motion.section
+          style={{ opacity }}
+          className="hero"
+        >
+          <div style={{
+            minHeight: '500px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '60px 20px',
+            position: 'relative',
+            zIndex: 1,
+            textAlign: 'center',
+            background: 'linear-gradient(135deg, rgba(139, 69, 19, 0.1) 0%, rgba(160, 82, 45, 0.05) 100%)'
+          }}>
+            <div style={{ maxWidth: '900px' }}>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  padding: '12px 28px',
+                  background: 'rgba(184, 115, 51, 0.15)',
+                  backdropFilter: 'blur(20px)',
+                  borderRadius: '50px',
+                  border: '1px solid rgba(210, 140, 80, 0.3)',
+                  marginBottom: '30px'
+                }}
+              >
+                <span style={{ fontSize: '24px' }}>🍫</span>
+                <span style={{ color: '#d2a679', fontWeight: '600', fontSize: '14px' }}>
+                  Crafted with Love
+                </span>
+              </motion.div>
 
-      {/* Products Preview */}
-      <section style={{ padding: '60px 20px', background: 'linear-gradient(135deg, #f3f4f6, #fef3c7)' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 'bold', marginBottom: '16px', background: 'linear-gradient(90deg, #78350f, #991b1b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-              Featured Collection
-            </h2>
-            <p style={{ fontSize: '18px', color: '#4b5563' }}>Discover our handcrafted masterpieces</p>
+              <motion.h1
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                style={{
+                  fontSize: 'clamp(2.5rem, 7vw, 4.5rem)',
+                  fontWeight: '800',
+                  background: 'linear-gradient(135deg, #f5deb3 0%, #daa520 50%, #d2a679 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  marginBottom: '20px',
+                  letterSpacing: '-0.02em',
+                  fontFamily: "'Georgia', serif"
+                }}
+              >
+                Indulge in Premium Chocolate
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                style={{
+                  fontSize: '1.3rem',
+                  color: '#d2a679',
+                  marginBottom: '40px',
+                  fontWeight: '300',
+                  lineHeight: '1.6'
+                }}
+              >
+                Artisan chocolates handcrafted with the finest ingredients from around the world
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                style={{
+                  display: 'flex',
+                  gap: '16px',
+                  justifyContent: 'center',
+                  flexWrap: 'wrap'
+                }}
+              >
+                <motion.button
+                  whileHover={{ scale: 1.05, y: -3 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => navigate('/products')}
+                  style={{
+                    padding: '16px 48px',
+                    fontSize: '16px',
+                    fontWeight: '700',
+                    border: 'none',
+                    borderRadius: '12px',
+                    background: 'linear-gradient(135deg, #d4a574 0%, #c9985a 100%)',
+                    color: '#1a0f0a',
+                    cursor: 'pointer',
+                    boxShadow: '0 15px 40px rgba(212, 165, 116, 0.3)',
+                    transition: 'all 0.3s'
+                  }}
+                >
+                  Explore Collection
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05, y: -3 }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{
+                    padding: '16px 48px',
+                    fontSize: '16px',
+                    fontWeight: '700',
+                    border: '2px solid #d2a679',
+                    borderRadius: '12px',
+                    background: 'transparent',
+                    color: '#d2a679',
+                    cursor: 'pointer',
+                    boxShadow: '0 15px 40px rgba(212, 165, 116, 0.15)',
+                    transition: 'all 0.3s'
+                  }}
+                >
+                  View Gift Sets
+                </motion.button>
+              </motion.div>
+            </div>
           </div>
-          
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px', marginBottom: '40px' }}>
-            {[{ name: 'Dark Chocolate Truffles', price: 24.99, rating: 4.9, image: 'https://images.unsplash.com/photo-1511381939415-e44015466834?w=500&h=500&fit=crop' }, { name: 'Milk Chocolate Assortment', price: 29.99, rating: 4.8, image: 'https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=500&h=500&fit=crop' }, { name: 'Luxury Gift Box', price: 49.99, rating: 5.0, image: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=500&h=500&fit=crop' }].map((product, index) => (
-              <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} style={{ backgroundColor: 'white', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 25px rgba(0,0,0,0.08)', cursor: 'pointer', transition: 'all 0.3s' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.15)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.08)'} onClick={() => navigate('/products')}>
-                <div style={{ position: 'relative', aspectRatio: '1', overflow: 'hidden', backgroundColor: '#f3f4f6' }}>
-                  <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.3s' }} />
-                  <button style={{ position: 'absolute', top: '16px', right: '16px', width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.9)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-                    <Heart style={{ width: 20, height: 20, color: '#4b5563' }} />
-                  </button>
-                </div>
-                <div style={{ padding: '24px' }}>
-                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '12px', color: '#1f2937' }}>{product.name}</h3>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <Star style={{ width: 16, height: 16, fill: '#d97706', color: '#d97706' }} />
-                      <span style={{ marginLeft: '4px', fontSize: '14px', fontWeight: '500' }}>{product.rating}</span>
-                    </div>
-                    <span style={{ fontSize: '12px', color: '#6b7280' }}>(200+ reviews)</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <span style={{ fontSize: '24px', fontWeight: 'bold', color: '#78350f' }}>${product.price}</span>
-                    <button style={{ padding: '8px 16px', background: 'linear-gradient(90deg, #d97706, #dc2626)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', transition: 'all 0.2s' }} onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'} onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>
-                      <ShoppingCart style={{ width: 16, height: 16 }} />
-                      Add
-                    </button>
+        </motion.section>
+
+        {/* Categories Section */}
+        <section style={{
+          padding: '80px 20px',
+          position: 'relative',
+          zIndex: 1,
+          maxWidth: '1400px',
+          margin: '0 auto'
+        }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            style={{
+              fontSize: 'clamp(2rem, 5vw, 3.2rem)',
+              fontWeight: '800',
+              textAlign: 'center',
+              marginBottom: '60px',
+              background: 'linear-gradient(135deg, #f5deb3 0%, #daa520 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              fontFamily: "'Georgia', serif"
+            }}
+          >
+            Chocolate Categories
+          </motion.h2>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '30px'
+          }}>
+            {categories.map((cat, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1 }}
+                whileHover={{ y: -10 }}
+                onClick={() => navigate('/products')}
+                style={{
+                  borderRadius: '20px',
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  height: '300px',
+                  position: 'relative',
+                  boxShadow: '0 20px 50px rgba(0, 0, 0, 0.4)',
+                  background: `url(${cat.image}) center/cover`,
+                  border: '1px solid rgba(212, 165, 116, 0.2)'
+                }}
+              >
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%)',
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  justifyContent: 'center',
+                  padding: '30px',
+                  textAlign: 'center'
+                }}>
+                  <div>
+                    <h3 style={{
+                      fontSize: '24px',
+                      fontWeight: '700',
+                      color: '#f5deb3',
+                      marginBottom: '8px'
+                    }}>
+                      {cat.name}
+                    </h3>
+                    <p style={{
+                      color: '#d2a679',
+                      fontSize: '14px'
+                    }}>
+                      Shop Now →
+                    </p>
                   </div>
                 </div>
               </motion.div>
             ))}
           </div>
+        </section>
 
-          <div style={{ textAlign: 'center' }}>
-            <button onClick={() => navigate('/products')} style={{ padding: '16px 32px', background: 'linear-gradient(90deg, #d97706, #dc2626)', color: 'white', border: 'none', borderRadius: '9999px', fontSize: '18px', fontWeight: '600', cursor: 'pointer', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', display: 'inline-flex', alignItems: 'center', gap: '8px', transition: 'transform 0.2s' }} onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'} onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>
-              View All Products
-              <ChevronRight style={{ width: 20, height: 20 }} />
-            </button>
-          </div>
-        </div>
-      </section>
+        {/* Featured Products */}
+        <section style={{
+          padding: '80px 20px',
+          position: 'relative',
+          zIndex: 1,
+          maxWidth: '1400px',
+          margin: '0 auto'
+        }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            style={{
+              fontSize: 'clamp(2rem, 5vw, 3.2rem)',
+              fontWeight: '800',
+              textAlign: 'center',
+              marginBottom: '20px',
+              background: 'linear-gradient(135deg, #f5deb3 0%, #daa520 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              fontFamily: "'Georgia', serif"
+            }}
+          >
+            Bestselling Collections
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.1 }}
+            style={{
+              textAlign: 'center',
+              color: '#d2a679',
+              marginBottom: '60px',
+              fontSize: '1.1rem'
+            }}
+          >
+            Handpicked selections loved by chocolate enthusiasts worldwide
+          </motion.p>
 
-      {/* Features */}
-      <section style={{ padding: '60px 20px', backgroundColor: '#ffffff' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 'bold', marginBottom: '16px', background: 'linear-gradient(90deg, #78350f, #991b1b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-              Why Choose Us
-            </h2>
-            <p style={{ fontSize: '18px', color: '#4b5563' }}>Experience the difference of true craftsmanship</p>
-          </div>
-          
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '32px' }}>
-            {[{ icon: Shield, title: 'Premium Quality', desc: 'Only the finest Belgian chocolate' }, { icon: Truck, title: 'Free Shipping', desc: 'On orders over $50' }, { icon: Package, title: 'Fresh Daily', desc: 'Handcrafted every morning' }, { icon: Award, title: 'Award Winning', desc: 'Recognized globally' }].map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} style={{ background: 'linear-gradient(135deg, #fef3c7, #fecaca)', padding: '32px', borderRadius: '16px', transition: 'all 0.3s' }}>
-                  <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '60px', height: '60px', borderRadius: '50%', backgroundColor: 'white', boxShadow: '0 4px 12px rgba(0,0,0,0.08)', marginBottom: '16px' }}>
-                    <Icon style={{ width: 32, height: 32, color: '#78350f' }} />
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '40px'
+          }}>
+            {featuredProducts.map((product, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: idx * 0.1 }}
+                whileHover={{ y: -15 }}
+                onClick={() => navigate(`/products/${product.id}`)}
+                style={{
+                  borderRadius: '24px',
+                  overflow: 'hidden',
+                  background: 'linear-gradient(135deg, rgba(139, 69, 19, 0.3) 0%, rgba(101, 50, 15, 0.2) 100%)',
+                  border: '1px solid rgba(212, 165, 116, 0.2)',
+                  backdropFilter: 'blur(20px)',
+                  cursor: 'pointer',
+                  boxShadow: '0 20px 50px rgba(0, 0, 0, 0.3)',
+                  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+                }}
+              >
+                {/* Badge */}
+                <div style={{
+                  position: 'absolute',
+                  top: '20px',
+                  left: '20px',
+                  background: 'linear-gradient(135deg, #d4a574 0%, #c9985a 100%)',
+                  color: '#1a0f0a',
+                  padding: '8px 16px',
+                  borderRadius: '50px',
+                  fontSize: '12px',
+                  fontWeight: '700',
+                  zIndex: 10,
+                  boxShadow: '0 4px 12px rgba(212, 165, 116, 0.3)'
+                }}>
+                  {product.badge}
+                </div>
+
+                {/* Image */}
+                <div style={{
+                  height: '280px',
+                  background: `url(${product.image}) center/cover`,
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}>
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    style={{
+                      position: 'absolute',
+                      top: '20px',
+                      right: '20px',
+                      background: 'rgba(26, 15, 10, 0.7)',
+                      backdropFilter: 'blur(10px)',
+                      borderRadius: '50%',
+                      width: '48px',
+                      height: '48px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      border: '1px solid rgba(212, 165, 116, 0.2)'
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <Heart size={20} color="#d4a574" fill="#d4a574" />
+                  </motion.div>
+                </div>
+
+                {/* Info */}
+                <div style={{ padding: '30px' }}>
+                  <div style={{
+                    display: 'flex',
+                    gap: '4px',
+                    marginBottom: '12px'
+                  }}>
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        size={14}
+                        fill={i < Math.floor(product.rating) ? '#daa520' : 'none'}
+                        stroke="#daa520"
+                      />
+                    ))}
+                    <span style={{ fontSize: '12px', color: '#a0864d', marginLeft: '8px' }}>
+                      ({product.rating})
+                    </span>
                   </div>
-                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px', color: '#1f2937' }}>{feature.title}</h3>
-                  <p style={{ fontSize: '14px', color: '#4b5563' }}>{feature.desc}</p>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
-      {/* CTA */}
-      <section style={{ padding: '60px 20px', background: 'linear-gradient(135deg, #78350f, #991b1b, #6b21a8)' }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 'bold', marginBottom: '24px', color: 'white' }}>Ready to Experience Luxury?</h2>
-            <p style={{ fontSize: '18px', color: '#fef3c7', marginBottom: '32px', lineHeight: '1.6' }}>Join thousands of satisfied customers and discover why our chocolates are rated 5 stars</p>
-            <button onClick={() => navigate('/signup')} style={{ padding: '16px 32px', backgroundColor: 'white', color: '#78350f', border: 'none', borderRadius: '9999px', fontSize: '16px', fontWeight: '600', cursor: 'pointer', boxShadow: '0 10px 25px rgba(0,0,0,0.2)', display: 'inline-flex', alignItems: 'center', gap: '8px', transition: 'all 0.2s' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#fef3c7'} onMouseLeave={(e) => e.target.style.backgroundColor = 'white'}>
-              Get Started Today <ChevronRight style={{ width: 20, height: 20 }} />
-            </button>
+                  <h3 style={{
+                    fontSize: '20px',
+                    fontWeight: '700',
+                    color: '#f5deb3',
+                    marginBottom: '12px'
+                  }}>
+                    {product.name}
+                  </h3>
+
+                  <p style={{
+                    fontSize: '14px',
+                    color: '#d2a679',
+                    lineHeight: '1.6',
+                    marginBottom: '20px'
+                  }}>
+                    Premium artisan chocolates crafted with single-origin cocoa
+                  </p>
+
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                  }}>
+                    <span style={{
+                      fontSize: '28px',
+                      fontWeight: '800',
+                      color: '#d4a574'
+                    }}>
+                      ₹{product.price}
+                    </span>
+
+                    <motion.button
+                      whileHover={{ scale: 1.08 }}
+                      whileTap={{ scale: 0.92 }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                      style={{
+                        padding: '12px 20px',
+                        background: 'linear-gradient(135deg, #d4a574 0%, #c9985a 100%)',
+                        color: '#1a0f0a',
+                        border: 'none',
+                        borderRadius: '10px',
+                        fontWeight: '700',
+                        fontSize: '13px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        boxShadow: '0 4px 12px rgba(212, 165, 116, 0.3)'
+                      }}
+                    >
+                      <ShoppingBag size={14} />
+                      Add
+                    </motion.button>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* Trust Section */}
+        <section style={{
+          padding: '80px 20px',
+          position: 'relative',
+          zIndex: 1,
+          maxWidth: '1400px',
+          margin: '0 auto'
+        }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gap: '40px'
+          }}>
+            {[
+              { icon: TrendingUp, title: '500+', subtitle: 'Happy Customers' },
+              { icon: Truck, title: 'FREE', subtitle: 'Shipping on Orders >₹1000' },
+              { icon: Shield, title: '100%', subtitle: 'Quality Guarantee' },
+              { icon: Gift, title: '24/7', subtitle: 'Gift Wrapping Available' }
+            ].map((item, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: idx * 0.1 }}
+                style={{
+                  textAlign: 'center',
+                  padding: '40px 30px',
+                  background: 'linear-gradient(135deg, rgba(139, 69, 19, 0.2) 0%, rgba(101, 50, 15, 0.1) 100%)',
+                  borderRadius: '20px',
+                  border: '1px solid rgba(212, 165, 116, 0.2)',
+                  backdropFilter: 'blur(20px)'
+                }}
+              >
+                <item.icon size={40} color="#d4a574" style={{ marginBottom: '16px', margin: '0 auto 16px' }} />
+                <h3 style={{
+                  fontSize: '24px',
+                  fontWeight: '800',
+                  color: '#f5deb3',
+                  marginBottom: '8px'
+                }}>
+                  {item.title}
+                </h3>
+                <p style={{ color: '#d2a679' }}>
+                  {item.subtitle}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* Newsletter */}
+        <section style={{
+          padding: '60px 20px',
+          position: 'relative',
+          zIndex: 1,
+          maxWidth: '900px',
+          margin: '80px auto 0',
+          textAlign: 'center'
+        }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            style={{
+              fontSize: '2.5rem',
+              fontWeight: '800',
+              color: '#f5deb3',
+              marginBottom: '16px',
+              fontFamily: "'Georgia', serif"
+            }}
+          >
+            Receive Exclusive Offers
+          </motion.h2>
+          <p style={{
+            color: '#d2a679',
+            marginBottom: '30px',
+            fontSize: '1.1rem'
+          }}>
+            Subscribe to our newsletter for special discounts and new launches
+          </p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            style={{
+              display: 'flex',
+              gap: '12px',
+              maxWidth: '500px',
+              margin: '0 auto'
+            }}
+          >
+            <input
+              type="email"
+              placeholder="your@email.com"
+              style={{
+                flex: 1,
+                padding: '14px 20px',
+                background: 'rgba(139, 69, 19, 0.2)',
+                border: '1px solid rgba(212, 165, 116, 0.3)',
+                borderRadius: '10px',
+                color: '#f5deb3',
+                outline: 'none',
+                fontSize: '15px',
+                fontFamily: 'inherit',
+                backdropFilter: 'blur(10px)'
+              }}
+            />
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              style={{
+                padding: '14px 30px',
+                background: 'linear-gradient(135deg, #d4a574 0%, #c9985a 100%)',
+                color: '#1a0f0a',
+                border: 'none',
+                borderRadius: '10px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                boxShadow: '0 10px 30px rgba(212, 165, 116, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
+            >
+              <Mail size={16} />
+              Subscribe
+            </motion.button>
           </motion.div>
-        </div>
-      </section>
+        </section>
 
-      {/* Footer */}
-      <footer style={{ backgroundColor: '#111827', color: '#d1d5db', padding: '48px 20px' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '32px', marginBottom: '32px' }}>
-            <div>
-              <h3 style={{ color: 'white', fontWeight: 'bold', fontSize: '18px', marginBottom: '16px' }}>Luxe Chocolate</h3>
-              <p style={{ fontSize: '14px' }}>Premium artisan chocolates crafted with passion and expertise.</p>
-            </div>
-            <div>
-              <h4 style={{ color: 'white', fontWeight: '600', marginBottom: '16px' }}>Shop</h4>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '14px' }}>
-                <li><button onClick={() => navigate('/products')} style={{ background: 'none', border: 'none', color: '#d1d5db', cursor: 'pointer', padding: 0, textAlign: 'left' }} onMouseEnter={(e) => e.target.style.color = '#fcd34d'} onMouseLeave={(e) => e.target.style.color = '#d1d5db'}>All Products</button></li>
-              </ul>
-            </div>
-            <div>
-              <h4 style={{ color: 'white', fontWeight: '600', marginBottom: '16px' }}>Support</h4>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '14px' }}>
-                <li><a href="#" style={{ color: '#d1d5db', textDecoration: 'none' }}>Contact Us</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 style={{ color: 'white', fontWeight: '600', marginBottom: '16px' }}>Connect</h4>
-              <div style={{ display: 'flex', gap: '16px' }}>
-                <button style={{ width: '40px', height: '40px', backgroundColor: '#1f2937', color: '#d1d5db', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#d97706'} onMouseLeave={(e) => e.target.style.backgroundColor = '#1f2937'}>
-                  <Facebook style={{ width: 20, height: 20 }} />
-                </button>
+        {/* Footer */}
+        <footer style={{
+          padding: '60px 20px 30px',
+          background: 'linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%)',
+          borderTop: '1px solid rgba(212, 165, 116, 0.1)',
+          position: 'relative',
+          zIndex: 1,
+          marginTop: '80px'
+        }}>
+          <div style={{
+            maxWidth: '1400px',
+            margin: '0 auto',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gap: '40px',
+            marginBottom: '40px'
+          }}>
+            {[
+              {
+                title: 'Shop',
+                links: ['All Products', 'Dark Chocolate', 'Milk Chocolate', 'Gift Sets']
+              },
+              {
+                title: 'Company',
+                links: ['About Us', 'Our Story', 'Sustainability', 'Press']
+              },
+              {
+                title: 'Support',
+                links: ['Contact Us', 'FAQ', 'Shipping Info', 'Returns']
+              }
+            ].map((col, idx) => (
+              <div key={idx}>
+                <h4 style={{ color: '#f5deb3', fontWeight: '700', marginBottom: '16px' }}>
+                  {col.title}
+                </h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {col.links.map((link, i) => (
+                    <a
+                      key={i}
+                      href="#"
+                      style={{
+                        color: '#d2a679',
+                        textDecoration: 'none',
+                        fontSize: '14px',
+                        transition: 'color 0.3s'
+                      }}
+                      onMouseEnter={(e) => e.target.style.color = '#f5deb3'}
+                      onMouseLeave={(e) => e.target.style.color = '#d2a679'}
+                    >
+                      {link}
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
+            ))}
           </div>
-          <div style={{ borderTop: '1px solid #374151', paddingTop: '32px', textAlign: 'center', fontSize: '14px' }}>
-            <p>&copy; 2026 Luxe Chocolate. All rights reserved.</p>
+
+          <div style={{
+            borderTop: '1px solid rgba(212, 165, 116, 0.1)',
+            paddingTop: '30px',
+            textAlign: 'center',
+            color: '#a0864d',
+            fontSize: '14px'
+          }}>
+            <p>© 2024 Luxe Chocolate. All rights reserved. | Crafted with 🍫 and Love</p>
           </div>
-        </div>
-      </footer>
-    </div>
+        </footer>
+      </div>
+    </>
   );
 };
-
-export { ChocolateShop };
-export default ChocolateShop;
